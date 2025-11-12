@@ -20,7 +20,7 @@ let spawn_spider_nearby position =
     depuis [current_pos] (poser une araignée sur une case adjacente si possible, ou disparaître, ou rien faire).
     Si [cooldown] is a multiple of [spider_egg_cooldown], une araignée apparaît si possible à côté.
     Si [lifetime = spider_egg_lifetime], le sac d'oeufs disparaît. *)
-let rec spider_egg (current_position : int * int) (cooldown : int) (lifetime : int) : unit = 
+let rec spider_egg (current_position : int * int) (cooldown : int) (lifetime : int) (id :int) : unit = 
   if cooldown mod 20 = 0 then spawn_egg_nearby current_position;
   if lifetime >= 60 then kill current_position;
   spider_egg current_position (cooldown + 1) (lifetime + 1)
@@ -31,5 +31,6 @@ let rec spider (current_position :int * int) : unit =
   let spawn_egg_bool = (Random.int 100 = 0) in
   if spawn_egg_bool then spawn_egg_nearby;
   render ();
-  perform End_of_turn
+  if safe_perform(id)then 
+    spider_egg new_position cooldown lifetime id
 ;;

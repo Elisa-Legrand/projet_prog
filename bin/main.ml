@@ -24,7 +24,7 @@ let camel_initial_position = random_position ()
 let () = camel_pos := camel_initial_position
 
 let () = set camel_initial_position (Camel,prochain_id())
-let () = Queue.add (fun () -> player (fun () -> camel camel_initial_position (id_courant()))) queue
+let () = Queue.add (fun () -> player (fun () -> camel camel_initial_position(id_courant() ) )) queue
 let snake_initial_position = random_position ()
 let () =set snake_initial_position (Snake,prochain_id())
 
