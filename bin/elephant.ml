@@ -27,9 +27,9 @@ let straight_line camel_pos elephant_pos =
 let rec elephant (current_position : int * int) (current_state : state) =
   match current_state with
   |Calm -> begin match straight_line !camel_pos current_position with
-    |None -> begin new_pos = move_dir current_position random_dir ;
+    |None -> begin (let new_pos = move_dir current_position random_dir in
       render () ; perform End_of_turn ;
-      elephant new_pos Calm end
+      elephant new_pos Calm) end
     |Some direction -> elephant current_position Charge(time_charging, direction)
     end
   |Charge(n, direction) when n = 1 -> elephant (move_elephant_charge current_position direction) Calm
