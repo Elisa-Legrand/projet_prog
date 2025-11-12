@@ -21,10 +21,7 @@ let move (old_position : int * int) (new_position : int * int) : int * int =
       new_position   
   | _ -> old_position
 
-let binaire_to_normalize (x:int):int =
-  x*2 -1
-
-let random_dir :dir =
+let random_dir() :dir =
   let int_new_dir = (Random.int 4) in
   match int_new_dir with
   |0 -> Up
