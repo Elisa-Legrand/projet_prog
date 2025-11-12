@@ -18,7 +18,9 @@ let random_position () : int * int = (Random.int width, Random.int height)
 let () =
   for _ = 0 to 200 do set (random_position ()) (Cactus,0)   done 
 
+
 let camel_initial_position = random_position ()
+let () = camel_pos := camel_initial_position
 
 let () = set camel_initial_position (Camel,prochain_id())
 let () = Queue.add (fun () -> player (fun () -> camel camel_initial_position (id_courant()))) queue

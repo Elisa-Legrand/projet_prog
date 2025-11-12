@@ -12,6 +12,8 @@ type _ Effect.t += End_of_turn: unit t
    correspondant à son prochain tour. *)
 let queue : (unit -> unit) Queue.t = Queue.create ()
 
+let camel_pos = ref (-1, -1)
+
 (** [player ia] est appelé pour jouer le tour caractérisé par la fonction [ia].
     L'exécution de la fonction est arrêtée si l'effet [End_of_turn] est perform
     et la continuation est enfilée dans [queue].*)

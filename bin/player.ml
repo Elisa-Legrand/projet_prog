@@ -23,6 +23,7 @@ let keyboard_direction () : int * int =
 let rec camel (current_position : int * int) (id:int) : unit =
   let new_position = current_position ++ keyboard_direction () in
   let new_position = move current_position new_position in
+  camel_pos := new_position;
   render ();
   perform End_of_turn;
   camel new_position id
