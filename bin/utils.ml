@@ -1,4 +1,5 @@
 open World
+open Engine
 
 type dir = Up | Down | Right | Left
 exception No_adjacent_space
@@ -72,8 +73,8 @@ let get_random_empty_adjacent_cell (position : int * int) : int * int =
     let idx = Random.int len in adjacent_cells.(idx)
 
 
-(** [kill position] tue le processus de l'objet en position [position], 
+(** [kill id] tue le processus de l'objet d'identifiant [id], 
     et remplace le contenu par [Empty].
-    Si la case est déjà vide, ne fait rien.*)
-(* let kill (position : int * int) : unit = *)
-  
+    Entre autres, la fonction place [id] dans [dead_set]. *)
+let kill (id : int) : unit =
+  dead_ids := IntSet.add id !dead_ids
