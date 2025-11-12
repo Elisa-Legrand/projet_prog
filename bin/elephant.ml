@@ -1,4 +1,4 @@
-open Notty_unix
+(* open Notty_unix
 open Ui
 open Utils
 open Effect
@@ -40,8 +40,8 @@ let rec elephant (current_position : int * int) (current_state : state) =
 If an entity other than a Cactus is on its way, it will kill it.*)
 and move_elephant_charge elephant_pos direction =
   match elephant_pos ++ dir_to_couple direction with
-  |(x,y)-> match get (x, y) with
-    |(Cactus,)
+  |(x,y)-> match get_content (x, y) with
+    | Cactus
   
   
   (* get(x,y) = (Cactus, i) -> elephant elephant_pos (Stunned(cooldown_cactus+1))
@@ -51,4 +51,4 @@ and move_elephant_charge elephant_pos direction =
   new_position
 ;;
 
-;;
+;; *)
