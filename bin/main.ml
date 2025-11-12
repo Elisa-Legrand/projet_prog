@@ -5,6 +5,7 @@ open Player
 open Engine
 open Player
 open Snake
+open Elephant
 
 (* Initialisation du monde *)
 

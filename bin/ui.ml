@@ -9,6 +9,7 @@ let string_of_cell : cell -> string = function
   | Spider_Egg -> "\u{1F95A}"
   | Camel      -> "\u{1F42A}"
   | Snake      -> "\u{1F40D}"
+  | Elephant   -> "\u{1F418}"
 
 (* Codes des emojis pour les animaux pertinents
    serpent : "\u{1F40D}"
