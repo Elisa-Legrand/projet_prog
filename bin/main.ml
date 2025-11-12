@@ -32,6 +32,13 @@ let () =set snake_initial_position (Snake,prochain_id())
 
 
 let () = Queue.add (fun () -> player (fun () -> snake snake_initial_position (id_courant()))) queue
+let elephant_initial_position = random_position ()
+let () =set elephant_initial_position (Elephant,prochain_id())
+
+(* La file contient deux chameaux pour tester *)
+
+
+let () = Queue.add (fun () -> player (fun () -> elephant elephant_initial_position Calm (id_courant()))) queue
 (* Début du jeu *)
 let () = run_queue ()
 

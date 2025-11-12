@@ -49,10 +49,3 @@ let run_queue () : 'a =
   done
   
 
-
-(**perform prenant en compte la mort: les creatures appelent
-safe perform pour que la premiere étape de leur continuation 
-soit de tester si ils sont morts*)
-let safe_perform (id : int):bool=
-    perform(End_of_turn);
-    is_dead id

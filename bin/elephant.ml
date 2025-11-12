@@ -18,7 +18,7 @@ returns Some 'the direction the elephant should run toward' if the Camel is in s
 and None if it's not*)
 let straight_line camel_pos elephant_pos = 
   match !camel_pos, elephant_pos with
-  |(x1,y1),(x2,y2) when x1=x2 -> if y1<y2 then Some Left else Some Right
+  |(x1,y1),(x2,y2) when x1=x2 -> if y1<y2 then Some Right else Some Left
   |(x1,y1),(x2,y2) when y1=y2 -> if x1<x2 then Some Up else Some Down
   |_ -> None
 ;;
