@@ -17,7 +17,7 @@ let queue : (unit -> unit) Queue.t = Queue.create ()
     et la continuation est enfilée dans [queue].*)
 let player (character : unit -> unit) : unit =
   try character ()
-  with effect End_of_turn, k ->
+  with|effect End_of_turn, k ->
     Queue.add (fun () -> continue k ()) queue
 
 (** [run_queue ()] exécute les fonctions correspondant aux tours successifs des entités du jeu.

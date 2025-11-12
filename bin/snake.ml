@@ -7,8 +7,10 @@ open Engine
 
 let () = Random.self_init ()
 
-let rec snake (current_position : int *int):unit =
+
+(** snake deplace le serpent dans une direction aleatoire à chaque tour*)
+let rec snake (current_position : int *int) (id:int) :unit =
   let new_position = move_dir current_position (random_dir()) in
   render ();
   perform End_of_turn;
-  snake new_position
+  snake new_position id

@@ -3,12 +3,12 @@ open World
 
 (** Affichage du contenu d'une cellule.*)
 let string_of_cell : cell -> string = function
-  | Empty      -> "  "
-  | Cactus     -> "\u{1F335}"
-  | Spider     -> "\u{1F577}"
-  | Spider_Egg -> "\u{1F95A}"
-  | Camel      -> "\u{1F42A}"
-  | Snake      -> "\u{1F40D}"
+  | Empty,_     -> "  "
+  | Cactus ,_    -> "\u{1F335}"
+  | Spider ,_    -> "\u{1F577}"
+  | Spider_Egg ,_-> "\u{1F95A}"
+  | Camel ,_     -> "\u{1F42A}"
+  | Snake ,_     -> "\u{1F40D}"
 
 (* Codes des emojis pour les animaux pertinents
    serpent : "\u{1F40D}"
