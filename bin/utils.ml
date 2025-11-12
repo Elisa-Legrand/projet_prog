@@ -56,7 +56,7 @@ let prochain_id():int =
 let id_courant() :int =
   !id
 
-let is_empty (position : int * int) : bool = (get position) = Empty
+let is_empty (position : int * int) : bool = (get position) = (Empty,0)
 
 let get_adjacent_cells (x, y : int * int) : (int * int) list =
   List.filter (fun (x, y) -> 0 <= x && x < height && 0 <= y && y < width)
