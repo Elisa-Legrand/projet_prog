@@ -6,6 +6,7 @@ let string_of_cell : cell -> string = function
   | Empty      -> "  "
   | Cactus     -> "\u{1F335}"
   | Spider     -> "\u{1F577}"
+  | Spider_Egg -> "\u{1F95A}"
   | Camel      -> "\u{1F42A}"
 
 (* Codes des emojis pour les animaux pertinents
