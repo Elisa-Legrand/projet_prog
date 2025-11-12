@@ -1,7 +1,22 @@
-(**open Utils
+open Utils
 open Effect
 open Effect.Deep
 open Engine
 
-let rec spider (current_position :int * int) :unit =
-  let **)
+let spider_egg_cooldown = 20 (* en nombre de tours *)
+let spider_egg_lifetime = 60
+
+let spawn_egg_nearby position = 
+  
+
+(** [spider_egg current_position cooldown lifetime] effectue tous les prochains tours du sac d'oeufs
+    depuis [current_pos] (poser une araignée sur une case adjacente si possible, ou disparaître, ou rien faire).
+    Si [cooldown] is a multiple of [spider_egg_cooldown], une araignée apparaît si possible à côté.
+    Si [lifetime = spider_egg_lifetime], le sac d'oeufs disparaît. *)
+let rec spider_egg (current_position : int * int) (cooldown : int) (lifetime : int) : unit = 
+  if cooldown mod 20 = 0 then spawn_egg_nearby current_position;
+  if lifetime >= 60 then kill current_position;
+  spider_egg current_position (cooldown + 1) (lifetime + 1)
+
+let rec spider (current_position :int * int) : unit =
+  let 
