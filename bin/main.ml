@@ -20,7 +20,8 @@ let () =
   for _ = 0 to 200 do set (random_position ()) Cactus   done 
 
 let camel_initial_position = random_position ()
-let () = set camel_initial_position Camel
+let () = set camel_initial_position Camel;
+  camel_pos := camel_initial_position
 
 let snake_initial_position = random_position ()
 let () =set snake_initial_position Snake
