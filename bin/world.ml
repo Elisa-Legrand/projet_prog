@@ -4,12 +4,14 @@ type cell = Empty | Cactus | Spider | Spider_Egg | Camel | Snake | Elephant
 let width, height = 50, 30
 
 (** Le monde [world] est un tableau mutable. *)
-let world : cell array array = Array.make_matrix width height Empty
+let world : cell array array = Array.make_matrix width height (Empty,0)
 
 (** [get (x,y)] renvoie le contenu de la case en position [x,y] du monde. 
     Renvoie un cactus pour toutes les cases hors du monde.*)
-let get (x, y : int * int) : cell = try world.(x).(y) with _ -> Cactus
+let get (x, y : int * int) : cell = try world.(x).(y) with _ -> (Cactus,0)
 
 (** [set (x,y) v] remplit la case en position [x,y] du monde avec l'entité [v].
     Lève [Exception: Invalid_argument] si la position est hors du monde.*)
 let set (x, y : int * int) (v : cell) : unit = world.(x).(y) <- v
+
+

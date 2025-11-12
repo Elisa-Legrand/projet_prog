@@ -15,9 +15,9 @@ let ( ++ ) (x, y : int * int) (dx, dy : int * int) : int * int =
     Renvoie [new_pos] si le mouvement a eu lieu, et [old_pos] sinon.*)
 let move (old_position : int * int) (new_position : int * int) : int * int =
   match get new_position with
-  | Empty ->
+  | Empty,_ ->
       let character = get old_position in
-      set old_position Empty ;
+      set old_position (Empty,0) ;
       set new_position character ;
       new_position   
   | _ -> old_position
@@ -45,7 +45,18 @@ let dir_to_couple (direc : dir) : (int * int) =
 let move_dir (old_pos : int * int) (direc : dir) : int * int = 
   move old_pos (old_pos ++ (dir_to_couple direc))
 
-let is_empty (position : int * int) : bool = (get position) = Empty
+
+let id = ref 0
+
+(**renvoie le prochian identifiant libre*)
+let prochain_id():int =
+  id := !id+1;
+  !id
+
+let id_courant() :int =
+  !id
+
+let is_empty (position : int * int) : bool = (get position) = (Empty,0)
 
 let get_adjacent_cells (x, y : int * int) : (int * int) list =
   List.filter (fun (x, y) -> 0 <= x && x < height && 0 <= y && y < width)
