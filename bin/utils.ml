@@ -11,17 +11,45 @@ let () = Random.self_init ()
 let ( ++ ) (x, y : int * int) (dx, dy : int * int) : int * int = 
   (x + dx, y + dy)
 
+(** [kill id] tue le processus de l'objet d'identifiant [id], 
+    et remplace le contenu par [Empty].
+    Entre autres, la fonction place [id] dans [dead_set]. *)
+let kill (id : int) : unit =
+  dead_ids := IntSet.add id !dead_ids
 (** [move old_pos new_pos] déplace le contenu de la case en [old_pos] vers la case [new_pos].
     Si la case [new_pos] est occupé, laisse le monde inchangé.
     Renvoie [new_pos] si le mouvement a eu lieu, et [old_pos] sinon.*)
-let move (old_position : int * int) (new_position : int * int) : int * int =
+
+
+(**fonction de comparaison entre les differentes creatures pour savoir qui 
+sachant qu'on peux ecraser les creatures plus faibles que nous*)
+let liste_plus_au_moins_fort = [Invalid;Cactus;Elephant;Spider;Snake;Camel;Spider_Egg;]
+let weaker crea1 crea2 =
+  let rec aux l =
+  match l with
+  |[]->failwith "comparaison de deux empty"
+  |h::_ when h=crea1 ->false
+  |h::_ when h=crea2 -> true
+  |_::t -> aux t
+  in
+  aux liste_plus_au_moins_fort
+
+let move (crea : creature) (old_position : int * int) (new_position : int * int) : int * int =
   match get new_position with
   | Empty,_ ->
       let character = get old_position in
       set old_position (Empty,0) ;
       set new_position character ;
       new_position   
-  | _ -> old_position
+  |crea_renc,_ when weaker crea crea_renc-> old_position
+  |_-> let x,y =new_position in
+       let (_,id_tue) = world.(x).(y) in 
+       kill id_tue;
+       let character = get old_position in
+       set old_position (Empty,0) ;
+       set new_position character ;
+       new_position  
+
 
 (** [random_dir ()] renvoie une direction cardinale au hasard.*)
 let random_dir () : dir =
@@ -43,8 +71,8 @@ let dir_to_couple (direc : dir) : (int * int) =
 (** [move_dir old_pos direc] déplace le contenu de la case en [old_pos] une case vers la direction [direc].
     Si la case atteinte est occupée, laisse le monde inchangé.
     Renvoie la nouvelle position si le mouvement a eu lieu, et [old_pos] sinon.*)
-let move_dir (old_pos : int * int) (direc : dir) : int * int = 
-  move old_pos (old_pos ++ (dir_to_couple direc))
+let move_dir (crea :creature)(old_pos : int * int) (direc : dir) : int * int = 
+  move crea old_pos (old_pos ++ (dir_to_couple direc))
 
 
 let _id = ref 0
@@ -73,8 +101,4 @@ let get_random_empty_adjacent_cell (position : int * int) : int * int =
     let idx = Random.int len in adjacent_cells.(idx)
 
 
-(** [kill id] tue le processus de l'objet d'identifiant [id], 
-    et remplace le contenu par [Empty].
-    Entre autres, la fonction place [id] dans [dead_set]. *)
-let kill (id : int) : unit =
-  dead_ids := IntSet.add id !dead_ids
+

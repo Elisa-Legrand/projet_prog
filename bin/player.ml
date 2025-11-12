@@ -22,7 +22,7 @@ let keyboard_direction () : int * int =
     [current_pos] (attendre une entrée, se déplacer en conséquence, recommencer)*)
 let rec camel (current_position : int * int) (id:int) : unit =
   let new_position = current_position ++ keyboard_direction () in
-  let new_position = move current_position new_position in
+  let new_position = move Camel current_position new_position in
   camel_pos := new_position;
   render ();
   if (safe_perform id) then

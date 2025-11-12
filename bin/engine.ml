@@ -47,9 +47,7 @@ let run_queue () : 'a =
     let suspended_character = Queue.pop queue in
     suspended_character () ;
   done
-
-let is_dead(id :int) : bool=
-  id = 200000202002(**à faire*)
+  
 
 
 (**perform prenant en compte la mort: les creatures appelent

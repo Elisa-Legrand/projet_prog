@@ -1,4 +1,4 @@
-open Utils
+(**open Utils
 open Effect
 open Effect.Deep
 open Engine
@@ -9,12 +9,12 @@ let spider_egg_lifetime = 60
 let spawn_egg_nearby position =
   let pos_egg = get_random_empty_adjacent_cell in
 
-;;
+
 
 let spawn_spider_nearby position =
   let pos_baby = get_random_empty_adjacent_cell in
   
-;;
+
 
 (** [spider_egg current_position cooldown lifetime] effectue tous les prochains tours du sac d'oeufs
     depuis [current_pos] (poser une araignée sur une case adjacente si possible, ou disparaître, ou rien faire).
@@ -33,4 +33,4 @@ let rec spider (current_position :int * int) : unit =
   render ();
   if safe_perform(id)then 
     spider_egg new_position cooldown lifetime id
-;;
+;;*)
