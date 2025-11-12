@@ -1,6 +1,7 @@
 open World
 
-type dir = Up | Down | Right | Left;;
+type dir = Up | Down | Right | Left
+exception No_adjacent_space
 
 let () = Random.self_init ()
 (** Déplacement d'une entité *)
@@ -55,3 +56,24 @@ let prochain_id():int =
 let id_courant() :int =
   !id
 
+let is_empty (position : int * int) : bool = (get position) = Empty
+
+let get_adjacent_cells (x, y : int * int) : (int * int) list =
+  List.filter (fun (x, y) -> 0 <= x && x < height && 0 <= y && y < width)
+  [(x+1,y); (x, y+1); (x-1,y); (x, y-1)]
+
+(** [get_random_empty_adjacent_cell position] renvoie une case adjacente aléatoire vide à côté si elle existe.
+    Sinon elle lève l'exception [No_adjacent_space].*)
+let get_random_empty_adjacent_cell (position : int * int) : int * int =
+  let adjacent_cells = Array.of_list (get_adjacent_cells position) in
+  let len = Array.length adjacent_cells in
+  if len = 0 then raise No_adjacent_space 
+  else
+    let idx = Random.int len in adjacent_cells.(idx)
+
+
+(** [kill position] tue le processus de l'objet en position [position], 
+    et remplace le contenu par [Empty].
+    Si la case est déjà vide, ne fait rien.*)
+(* let kill (position : int * int) : unit = *)
+  
