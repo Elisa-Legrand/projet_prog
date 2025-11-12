@@ -1,4 +1,4 @@
-(* open Notty_unix
+(*open Notty_unix
 open Ui
 open Utils
 open Effect
@@ -52,3 +52,4 @@ and move_elephant_charge elephant_pos direction =
 ;;
 
 ;; *)
+*)

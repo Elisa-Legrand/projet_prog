@@ -46,15 +46,15 @@ let move_dir (old_pos : int * int) (direc : dir) : int * int =
   move old_pos (old_pos ++ (dir_to_couple direc))
 
 
-let id = ref 0
+let _id = ref 0
 
 (**renvoie le prochian identifiant libre*)
 let prochain_id():int =
-  id := !id+1;
-  !id
+  _id := !_id+1;
+  !_id
 
 let id_courant() :int =
-  !id
+  !_id
 
 let is_empty (position : int * int) : bool = (get position) = (Empty,0)
 
