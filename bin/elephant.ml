@@ -16,18 +16,11 @@ let straight_line camel_pos elephant_pos =
   |_ -> None
 ;;
 
-(*moves the calm elephant according to a direction if possible*)
-let move_elephant_calm elephant_pos direction =
-  match elephant_pos ++ dir_to_couple direction with
-  |(x,y) when get(x,y) = Empty -> move_dir elephant_pos direction
-  |(x,y) -> elephant_pos
-;;
-
 (*moves the charging elephant where it needs to be if possible. If an entity other than a Cactus is on its way, it will kill it.*)
 let move_elephant_charge elephant_pos direction =
   match elephant_pos ++ dir_to_couple direction with
   |(x,y) when get(x,y) = Cactus -> elephant current_position Stunned(21)
-  |(x,y) -> squash(x,y) ; new_position = move_dir elephant_pos direction ;
+  |(x,y) -> (*squash(x,y)*) ; new_position = move_dir elephant_pos direction ;
   render ();
   perform End_of_turn;
   new_position
@@ -37,7 +30,7 @@ let move_elephant_charge elephant_pos direction =
 let rec elephant (current_position : int * int) (current_state : state) =
   match state with
   |Calm -> begin match straight_line camel_pos current_position with
-    |None -> elephant (move_elephant current_position random_dir() Calm) Calm
+    |None -> perform End_of_turn ; elephant (move_dir current_position random_dir()) Calm
     |Some direction -> elephant current_position Charge(10, direction)
     end
   |Charge(n, direction) when n = 1 -> elephant (move_elephant_charge current_position direction) Calm
