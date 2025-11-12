@@ -1,1 +1,0 @@
-let tab x = 3*x
