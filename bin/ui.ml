@@ -10,6 +10,7 @@ let string_of_cell : cell -> string = function
   | Camel  ,_    -> "\u{1F42A}"
   | Snake  ,_    -> "\u{1F40D}"
   | Elephant  ,_ -> "\u{1F418}"
+  | Invalid ,_ -> failwith "Invalid cell detected"
 
 (* Codes des emojis pour les animaux pertinents
    serpent : "\u{1F40D}"

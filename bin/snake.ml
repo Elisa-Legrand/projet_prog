@@ -12,5 +12,5 @@ let () = Random.self_init ()
 let rec snake (current_position : int *int) (id:int) :unit =
   let new_position = move_dir current_position (random_dir()) in
   render ();
-  if safe_perform(id) then 
-  snake new_position id
+  if (safe_perform id) then
+    snake new_position id

@@ -25,5 +25,5 @@ let rec camel (current_position : int * int) (id:int) : unit =
   let new_position = move current_position new_position in
   camel_pos := new_position;
   render ();
-  if safe_perform(id) then 
-  camel new_position id
+  if (safe_perform id) then
+    camel new_position id

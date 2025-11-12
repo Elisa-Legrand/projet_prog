@@ -1,4 +1,5 @@
 open World
+open Engine
 
 type dir = Up | Down | Right | Left
 exception No_adjacent_space
@@ -46,15 +47,15 @@ let move_dir (old_pos : int * int) (direc : dir) : int * int =
   move old_pos (old_pos ++ (dir_to_couple direc))
 
 
-let id = ref 0
+let _id = ref 0
 
 (**renvoie le prochian identifiant libre*)
 let prochain_id():int =
-  id := !id+1;
-  !id
+  _id := !_id+1;
+  !_id
 
 let id_courant() :int =
-  !id
+  !_id
 
 let is_empty (position : int * int) : bool = (get position) = (Empty,0)
 
@@ -72,8 +73,8 @@ let get_random_empty_adjacent_cell (position : int * int) : int * int =
     let idx = Random.int len in adjacent_cells.(idx)
 
 
-(** [kill position] tue le processus de l'objet en position [position], 
+(** [kill id] tue le processus de l'objet d'identifiant [id], 
     et remplace le contenu par [Empty].
-    Si la case est déjà vide, ne fait rien.*)
-(* let kill (position : int * int) : unit = *)
-  
+    Entre autres, la fonction place [id] dans [dead_set]. *)
+let kill (id : int) : unit =
+  dead_ids := IntSet.add id !dead_ids
