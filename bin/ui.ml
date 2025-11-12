@@ -5,12 +5,13 @@ open World
 let string_of_cell : cell -> string = function
   | Empty      -> "  "
   | Cactus     -> "\u{1F335}"
+  | Spider     -> "\u{1F577}"
   | Camel      -> "\u{1F42A}"
 
 (* Codes des emojis pour les animaux pertinents
    serpent : "\u{1F40D}"
    éléphant : "\u{1F418}"
-   araignée : "\u{1F577} "
+   araignée : "\u{1F577}"
    oeuf : "\u{1F95A}"
    Des sites comme l'emojipedia peuvent vous donner plus de codes.
 *)
