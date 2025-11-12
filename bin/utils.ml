@@ -35,3 +35,4 @@ let dir_to_couple (direc:dir):(int*int) =
   |Down -> (-1,0)
   |Right -> (0,1)
   |Left -> (0,-1)
+
