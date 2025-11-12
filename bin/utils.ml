@@ -2,6 +2,7 @@ open World
 
 type dir = Up | Down | Right | Left;;
 
+let () = Random.self_init ()
 (** Déplacement d'une entité *)
 
 (** Opérateur somme pour les paires d'entiers*)
@@ -20,3 +21,20 @@ let move (old_position : int * int) (new_position : int * int) : int * int =
       new_position   
   | _ -> old_position
 
+let binaire_to_normalize (x:int):int =
+  x*2 -1
+
+let random_dir :dir =
+  let int_new_dir = (Random.int 4) in
+  match int_new_dir with
+  |0 -> Up
+  |1 -> Down
+  |2-> Right
+  |_->Left
+
+let dir_to_couple (direc:dir):(int*int) =
+  match direc with
+  |Up ->(1,0)
+  |Down -> (-1,0)
+  |Right -> (0,1)
+  |Left -> (0,-1)
