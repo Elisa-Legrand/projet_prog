@@ -1,5 +1,7 @@
 open World
 
+type dir = Up | Down | Right | Left;;
+
 (** Déplacement d'une entité *)
 
 (** Opérateur somme pour les paires d'entiers*)
@@ -17,3 +19,4 @@ let move (old_position : int * int) (new_position : int * int) : int * int =
       set new_position character ;
       new_position   
   | _ -> old_position
+
