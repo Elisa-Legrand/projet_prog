@@ -17,7 +17,7 @@ let () = Random.self_init ()
 returns Some 'the direction the elephant should run toward' if the Camel is in sight,
 and None if it's not*)
 let straight_line camel_pos elephant_pos = 
-  match camel_pos, elephant_pos with
+  match !camel_pos, elephant_pos with
   |(x1,y1),(x2,y2) when x1=x2 -> if y1<y2 then Some Left else Some Right
   |(x1,y1),(x2,y2) when y1=y2 -> if x1<x2 then Some Up else Some Down
   |_ -> None
@@ -26,7 +26,7 @@ let straight_line camel_pos elephant_pos =
 (*defines what the elephant will do depending on its state*)
 let rec elephant (current_position : int * int) (current_state : state) =
   match current_state with
-  |Calm -> begin match straight_line camel_pos current_position with
+  |Calm -> begin match straight_line !camel_pos current_position with
     |None -> begin new_pos = move_dir current_position random_dir ;
       render () ; perform End_of_turn ;
       elephant new_pos Calm end
