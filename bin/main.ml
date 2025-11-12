@@ -4,6 +4,7 @@ open Utils
 open Player
 open Engine
 open Player
+open Snake
 
 (* Initialisation du monde *)
 
