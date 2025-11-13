@@ -7,12 +7,12 @@ open World
 let spider_egg_cooldown = 20 (* en nombre de tours *)
 let spider_egg_lifetime = 60
 
-let spawn_egg_nearby position =
+let spawn_egg_nearby position : unit =
   let pos_egg = get_random_empty_adjacent_cell position in
   spawn pos_egg Spider_Egg
 ;;
 
-let spawn_spider_nearby position =
+let spawn_spider_nearby position : unit=
   let pos_baby = get_random_empty_adjacent_cell position in
   spawn pos_baby Spider
 ;;
