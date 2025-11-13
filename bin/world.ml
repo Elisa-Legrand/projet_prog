@@ -14,6 +14,20 @@ type cell = creature * int
 let invalid_id = -1
 let width, height = (50, 30)
 
+(* Le système de coordonnées est le suivant :
+
+(0,0)-------------------> + x (width)
+  |
+  |
+  |
+  |
+  |
+  |
+  v
+ + y (height)
+
+*)
+
 (** Le monde [world] est un tableau mutable. *)
 let world : cell array array = Array.make_matrix width height (Empty, invalid_id)
 
