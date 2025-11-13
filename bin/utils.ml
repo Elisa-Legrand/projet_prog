@@ -1,9 +1,5 @@
 open World
 open Engine
-open Player
-open Elephant
-open Snake
-open Spider
 
 type dir = Up | Down | Right | Left | Stay
 
