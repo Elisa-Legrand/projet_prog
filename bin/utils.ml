@@ -133,5 +133,3 @@ let get_random_empty_adjacent_cell (position : int * int) : int * int =
 
 (** [spawn position entity] conjure une [entity] à la case [position], même si
     la case est déjà remplie. *)
-let spawn (position : int * int) (entity : creature) : unit =
-  set position (entity, prochain_id ())
