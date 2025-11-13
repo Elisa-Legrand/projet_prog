@@ -12,9 +12,8 @@ let () = Random.self_init ()
 let ( ++ ) ((x, y) : int * int) ((dx, dy) : int * int) : int * int =
   (x + dx, y + dy)
 
-(** [kill id] tue le processus de l'objet d'identifiant [id].
-    Entre autres, la fonction place [id] dans [dead_set].
-*)
+(** [kill id] tue le processus de l'objet d'identifiant [id]. Entre autres, la
+    fonction place [id] dans [dead_set]. *)
 let kill (id : int) : unit = dead_ids := IntSet.add id !dead_ids
 
 (** On construit une fonction de comparaison entre les differentes creatures
@@ -80,8 +79,8 @@ let random_dir () : dir =
   | 3 -> Left
   | _ -> Stay
 
-(** [random_dir_no_stay ()] renvoie une direction cardinale au hasard, mais pas la
-    direction "immobile" *)
+(** [random_dir_no_stay ()] renvoie une direction cardinale au hasard, mais pas
+    la direction "immobile" *)
 let random_dir_no_stay () : dir =
   let int_new_dir = Random.int 5 in
   match int_new_dir with 0 -> Up | 1 -> Down | 2 -> Right | _ -> Left
