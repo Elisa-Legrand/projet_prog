@@ -20,20 +20,10 @@ let number_of_cacti = 200
 
 let () =
   for _ = 0 to number_of_cacti - 1 do
-    set (random_position ()) (Cactus, invalid_id)
+    spawn (random_position ()) Cactus 
   done
 
-let camel_initial_position = random_position ()
-let () = camel_pos := camel_initial_position
-let () = set camel_initial_position (Camel, prochain_id ())
-
-let () =
-  Queue.add
-    (fun () -> player (fun () -> camel camel_initial_position (id_courant ())))
-    queue
-
-let snake_initial_position = random_position ()
-let () = set snake_initial_position (Snake, prochain_id ())
+let () = spawn (random_position ()) Snake
 
 (* La file contient deux chameaux pour tester *)
 
@@ -52,6 +42,15 @@ let () =
     (fun () ->
       player (fun () -> elephant elephant_initial_position Calm (id_courant ())))
     queue
+
+let camel_initial_position = random_position ()
+let () = camel_pos := camel_initial_position
+let () = set camel_initial_position (Camel, prochain_id ())
+
+let () =
+Queue.add
+  (fun () -> player (fun () -> camel camel_initial_position (id_courant ())))
+  queue
 
 (* Début du jeu *)
 let () = run_queue ()
