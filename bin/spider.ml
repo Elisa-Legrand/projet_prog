@@ -2,6 +2,7 @@ open Utils
 open Effect
 open Effect.Deep
 open Engine
+open World
 
 let spider_egg_cooldown = 20 (* en nombre de tours *)
 let spider_egg_lifetime = 60
@@ -9,10 +10,12 @@ let spider_egg_lifetime = 60
 let spawn_egg_nearby position =
   let pos_egg = get_random_empty_adjacent_cell position in
   spawn pos_egg Spider_Egg
+;;
 
 let spawn_spider_nearby position =
   let pos_baby = get_random_empty_adjacent_cell position in
   spawn pos_baby Spider
+;;
 
 (* [spider_egg current_position cooldown lifetime] effectue tous les
 prochains tours du sac d'oeufs depuis [current_pos] (poser une araignée sur

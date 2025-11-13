@@ -117,4 +117,6 @@ let get_random_empty_adjacent_cell (position : int * int) : int * int =
     let idx = Random.int len in
     adjacent_cells.(idx)
 
-let spawn position entity = set position (entity, prochain_id ())
+let spawn position entity =
+  set position (entity, prochain_id())
+;;
