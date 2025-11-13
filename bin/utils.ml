@@ -63,8 +63,8 @@ let random_dir () : dir =
 (** [dir_to_couple direc] convertit une direction cardinale en son couple d'entiers correspondant. *)
 let dir_to_couple (direc : dir) : (int * int) =
   match direc with
-  |Up ->(1,0)
-  |Down -> (-1,0)
+  |Up ->(-1,0)
+  |Down -> (1,0)
   |Right -> (0,1)
   |Left -> (0,-1)
 

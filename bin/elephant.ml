@@ -18,7 +18,7 @@ returns Some 'the direction the elephant should run toward' if the Camel is in s
 and None if it's not*)
 let straight_line camel_pos elephant_pos = 
   match !camel_pos, elephant_pos with
-  |(x1,y1),(x2,y2) when x1=x2 -> if y1<y2 then Some Right else Some Left
+  |(x1,y1),(x2,y2) when x1=x2 -> if y1<y2 then Some Left else Some Right
   |(x1,y1),(x2,y2) when y1=y2 -> if x1<x2 then Some Up else Some Down
   |_ -> None
 ;;
@@ -28,16 +28,18 @@ let rec elephant (current_position : int * int) (current_state : state) (id:int)
   match current_state with
   |Calm -> begin match straight_line camel_pos current_position with
     |None -> let new_pos = move_dir Elephant current_position (random_dir()) in
-      render () ; if safe_perform(id) then 
+      if safe_perform(id) then 
       elephant new_pos Calm id
-    |Some direction -> if safe_perform(id) then elephant current_position (Charge(time_charging, direction)) id
+    |Some direction -> elephant current_position (Charge(time_charging, direction)) id
     end
-  |Charge(n, direction) when n = 1 ->let new_pos,stun =move_elephant_charge current_position direction in
-                                      if safe_perform(id) then  
-                                      elephant new_pos (if stun then Stunned(cooldown_cactus) else Calm)  id 
+  |Charge(n, direction) when n = 1 -> let new_pos,stun = move_elephant_charge current_position direction in
+                                      if stun then 
+                                      elephant current_position (Stunned(cooldown_cactus+1)) id
+                                      else if safe_perform(id) then elephant new_pos Calm id
   |Charge(n, direction) when n > 1 -> let new_pos,stun = move_elephant_charge current_position direction in
-                                      if safe_perform(id) then 
-                                      elephant new_pos (if stun then Stunned(cooldown_cactus) else Charge(n-1, direction)) id
+                                      if stun then 
+                                      elephant current_position (Stunned(cooldown_cactus+1)) id
+                                      else if safe_perform(id) then elephant new_pos (Charge(n-1, direction)) id
   |Stunned(n) when n = 1 -> if safe_perform(id) then elephant current_position Calm id
   |Stunned(n) when n > 1 -> if safe_perform(id) then elephant current_position (Stunned(n-1)) id
   |_->failwith "strange"
