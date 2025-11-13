@@ -5,6 +5,7 @@ open Player
 open Engine
 open Snake
 open Elephant
+open Spider
 
 (* Initialisation du monde *)
 
@@ -23,9 +24,26 @@ let () =
     spawn (random_position ()) Cactus 
   done
 
-let () = spawn (random_position ()) Snake
+let camel_initial_position = random_position ()
+let () = camel_pos := camel_initial_position
+let () = set camel_initial_position (Camel, prochain_id ())
 
+let () =
+  Queue.add
+    (fun () -> player (fun () -> camel camel_initial_position (id_courant ())))
+    queue
+
+let spider_initial_position = random_position ()
+let () = set spider_initial_position (Spider, prochain_id ())
+
+let () = 
+  Queue.add
+    (fun () -> player (fun () -> spider spider_initial_position (id_courant ())))
+    queue
 (* La file contient deux chameaux pour tester *)
+
+let snake_initial_position = random_position ()
+let () = set snake_initial_position (Snake, prochain_id ())
 
 let () =
   Queue.add
