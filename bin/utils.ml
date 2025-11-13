@@ -40,7 +40,7 @@ let move (crea : creature) (old_position : int * int) (new_position : int * int)
   match get new_position with
   | Empty, _ ->
       let character = get old_position in
-      set old_position (Empty, 0);
+      set old_position (Empty, invalid_id);
       set new_position character;
       new_position
   | crea_renc, _ when weaker crea crea_renc -> old_position
@@ -49,7 +49,7 @@ let move (crea : creature) (old_position : int * int) (new_position : int * int)
       let _, id_tue = world.(x).(y) in
       kill id_tue;
       let character = get old_position in
-      set old_position (Empty, 0);
+      set old_position (Empty, invalid_id);
       set new_position character;
       new_position
 
@@ -83,7 +83,7 @@ let prochain_id () : int =
   !_id
 
 let id_courant () : int = !_id
-let is_empty (position : int * int) : bool = get position = (Empty, 0)
+let is_empty (position : int * int) : bool = get position = (Empty, invalid_id)
 
 let get_adjacent_cells ((x, y) : int * int) : (int * int) list =
   List.filter
