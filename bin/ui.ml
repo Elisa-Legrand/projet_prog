@@ -3,14 +3,14 @@ open World
 
 (** Affichage du contenu d'une cellule.*)
 let string_of_cell : cell -> string = function
-  | Empty ,_     -> "  "
-  | Cactus ,_  -> "\u{1F335}"
-  | Spider ,_    -> "\u{1F577}"
-  | Spider_Egg ,_-> "\u{1F95A}"
-  | Camel  ,_    -> "\u{1F42A}"
-  | Snake  ,_    -> "\u{1F40D}"
-  | Elephant  ,_ -> "\u{1F418}"
-  | Invalid ,_ -> failwith "Invalid cell detected"
+  | Empty, _ -> "  "
+  | Cactus, _ -> "\u{1F335}"
+  | Spider, _ -> "\u{1F577}"
+  | Spider_Egg, _ -> "\u{1F95A}"
+  | Camel, _ -> "\u{1F42A}"
+  | Snake, _ -> "\u{1F40D}"
+  | Elephant, _ -> "\u{1F418}"
+  | Invalid, _ -> failwith "Invalid cell detected"
 
 (* Codes des emojis pour les animaux pertinents
    serpent : "\u{1F40D}"
@@ -24,12 +24,10 @@ let string_of_cell : cell -> string = function
 let draw_cell (c : cell) : image = I.string A.empty (string_of_cell c)
 
 let draw_world () : image =
-  I.hcat
-  @@ Array.to_list
+  I.hcat @@ Array.to_list
   @@ Array.map
        (fun column -> I.vcat @@ Array.to_list @@ Array.map draw_cell column)
        world
-
 
 open Notty_unix
 
@@ -38,4 +36,5 @@ let terminal : Term.t = Term.create ()
 
 (** [render ()] met à jour l'affichage courant dans le terminal*)
 let render () : unit = Term.image terminal (draw_world ())
+
 let () = render ()

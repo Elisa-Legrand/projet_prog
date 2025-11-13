@@ -4,5 +4,6 @@
  (libraries notty.unix))
 
 (env
-  (dev
-    (flags (:standard -w -32 -w -33 -w -34 -w -37 -w -38))))
+ (dev
+  (flags
+   (:standard -w -32 -w -33 -w -34 -w -37 -w -38))))

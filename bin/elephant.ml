@@ -6,11 +6,10 @@ open Effect.Deep
 open Engine
 open World
 
-type state = Calm | Charge of int * dir | Stunned of int;;
+type state = Calm | Charge of int * dir | Stunned of int
 
 let time_charging = 10
 let cooldown_cactus = 20
-
 let () = Random.self_init ()
 
 (*detects whether the camel and elephant are on the same line or column,
@@ -24,7 +23,8 @@ let straight_line camel_pos elephant_pos =
 ;;
 
 (*defines what the elephant will do depending on its state*)
-let rec elephant (current_position : int * int) (current_state : state) (id:int):unit=
+let rec elephant (current_position : int * int) (current_state : state)
+    (id : int) : unit =
   match current_state with
   |Calm -> begin match straight_line camel_pos current_position with
     |None -> let new_pos = move_dir Elephant current_position (random_dir()) in
@@ -45,11 +45,13 @@ let rec elephant (current_position : int * int) (current_state : state) (id:int)
   |_->failwith "strange"
 (*moves the charging elephant where it needs to be if possible.
 If an entity other than a Cactus is on its way, it will kill it.*)
-and move_elephant_charge (elephant_pos:int*int) (direction:dir) :(int*int)*bool=
+and move_elephant_charge (elephant_pos : int * int) (direction : dir) :
+    (int * int) * bool =
   match elephant_pos ++ dir_to_couple direction with
-  |(x,y)-> match get_content (x, y) with
-    | Cactus |Invalid -> elephant_pos,true
-    |_->let new_pos = move_dir  Elephant elephant_pos direction in
-                      render () ; 
-                      new_pos,false
-;; 
+  | x, y -> (
+      match get_content (x, y) with
+      | Cactus | Invalid -> (elephant_pos, true)
+      | _ ->
+          let new_pos = move_dir Elephant elephant_pos direction in
+          render ();
+          (new_pos, false))
