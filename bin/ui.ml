@@ -11,6 +11,8 @@ let string_of_cell : cell -> string = function
   | Snake, _ -> "\u{1F40D}"
   | Elephant, _ -> "\u{1F418}"
   | Invalid, _ -> failwith "Invalid cell detected"
+  |Angry_Elephant ,_ -> "\u{1F621}"
+  |Stunned_Elephant,_ ->"\u{1F635}"
 
 (* Codes des emojis pour les animaux pertinents
    serpent : "\u{1F40D}"

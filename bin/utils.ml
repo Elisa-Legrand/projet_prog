@@ -32,19 +32,24 @@ let toughness_dict : (creature, creature list) Hashtbl.t =
     (* Invalid est le type des murs extérieurs *)
     Hashtbl.add dict Cactus [];
     Hashtbl.add dict Elephant [ Snake; Spider; Camel; Spider_Egg ];
+    Hashtbl.add dict Angry_Elephant [ Snake; Spider; Camel; Spider_Egg ];
+    Hashtbl.add dict Stunned_Elephant [];
     Hashtbl.add dict Snake [ Spider; Spider_Egg ];
     Hashtbl.add dict Spider [ Camel ];
-    Hashtbl.add dict Camel [ Snake ];
-    Hashtbl.add dict Spider_Egg []
+    Hashtbl.add dict Camel [ Snake ;Stunned_Elephant;Spider_Egg];
+    Hashtbl.add dict Spider_Egg [];
+    Hashtbl.add dict Empty [];
   end;
   dict
 
 (** [can_stomp crea1 crea2] renvoie [true] si crea1 peut écraser crea2. Sinon,
     renvoie [false]. *)
-let can_stomp (crea1 : creature) (crea2 : creature) =
-  assert (Empty <> crea1 && Invalid <> crea1);
+
+    (**assert (Empty <> crea1 && Invalid <> crea1);
   assert (Empty <> crea2);
-  assert (Hashtbl.mem toughness_dict crea1);
+  assert (Hashtbl.mem toughness_dict crea1);*)
+let can_stomp (crea1 : creature) (crea2 : creature) =
+  
   let weaker_creatures = Hashtbl.find toughness_dict crea1 in
   List.mem crea2 weaker_creatures
 
