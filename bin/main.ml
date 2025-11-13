@@ -20,7 +20,7 @@ let number_of_cacti = 200
 
 let () =
   for _ = 0 to number_of_cacti - 1 do
-    set (random_position ()) (Cactus, -1)
+    set (random_position ()) (Cactus, invalid_id)
   done
 
 let camel_initial_position = random_position ()
