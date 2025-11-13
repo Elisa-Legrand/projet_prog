@@ -19,7 +19,22 @@ let keyboard_direction () : dir =
   | `Key (`Arrow `Down, _) -> Down
   | `Key (`Arrow `Up, _) -> Up
   | _ -> Stay
+;;
 
+let end_of_game score =
+  print_string("
+    █████▀█████████████████████\n
+    █─▄▄▄▄██▀▄─██▄─▀█▀─▄█▄─▄▄─█\n
+    █─██▄─██─▀─███─█▄█─███─▄█▀█\n
+    ▀▄▄▄▄▄▀▄▄▀▄▄▀▄▄▄▀▄▄▄▀▄▄▄▄▄▀\n
+    ████████████████████████\n
+    █─▄▄─█▄─█─▄█▄─▄▄─█▄─▄▄▀█\n
+    █─██─██▄▀▄███─▄█▀██─▄─▄█\n
+    ▀▄▄▄▄▀▀▀▄▀▀▀▄▄▄▄▄▀▄▄▀▄▄▀\n
+    \n
+    You lost ! Your score is ") ;
+  print_int(score)
+;;
 (** [caml current_pos] effectue tous les prochains tours du chameau à partir de
     la position [current_pos] (attendre une entrée, se déplacer en conséquence,
     recommencer)*)
@@ -28,4 +43,4 @@ let rec camel (current_position : int * int) (id : int) : unit =
   let new_position = move_dir current_position (keyboard_direction ()) in
   camel_pos := new_position;
   render ();
-  if safe_perform id then camel new_position id
+  if safe_perform id then camel new_position id else end_of_game !number_of_turn_played 
