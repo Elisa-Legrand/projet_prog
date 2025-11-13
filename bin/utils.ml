@@ -1,5 +1,9 @@
 open World
 open Engine
+open Player
+open Elephant
+open Snake
+open Spider
 
 type dir = Up | Down | Right | Left | Stay
 
@@ -12,8 +16,8 @@ let () = Random.self_init ()
 let ( ++ ) ((x, y) : int * int) ((dx, dy) : int * int) : int * int =
   (x + dx, y + dy)
 
-(** [kill id] tue le processus de l'objet d'identifiant [id], et remplace le
-    contenu par [Empty]. Entre autres, la fonction place [id] dans [dead_set].
+(** [kill id] tue le processus de l'objet d'identifiant [id].
+    Entre autres, la fonction place [id] dans [dead_set].
 *)
 let kill (id : int) : unit = dead_ids := IntSet.add id !dead_ids
 
@@ -109,7 +113,7 @@ let _id = ref 0
 
 (**renvoie le prochian identifiant libre*)
 let prochain_id () : int =
-  _id := !_id + 1;
+  incr _id;
   !_id
 
 let id_courant () : int = !_id
