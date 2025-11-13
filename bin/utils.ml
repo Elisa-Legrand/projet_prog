@@ -1,7 +1,7 @@
 open World
 open Engine
 
-type dir = Up | Down | Right | Left
+type dir = Up | Down | Right | Left | Stay
 
 exception No_adjacent_space
 
@@ -62,10 +62,11 @@ let random_dir () : dir =
     d'entiers correspondant. *)
 let dir_to_couple (direc : dir) : int * int =
   match direc with
-  | Up -> (1, 0)
-  | Down -> (-1, 0)
-  | Right -> (0, 1)
-  | Left -> (0, -1)
+  | Right -> (1, 0)
+  | Left -> (-1, 0)
+  | Down -> (0, 1)
+  | Up -> (0, -1)
+  | Stay -> (0, 0)
 
 (** [move_dir old_pos direc] déplace le contenu de la case en [old_pos] une case
     vers la direction [direc]. Si la case atteinte est occupée, laisse le monde

@@ -10,15 +10,15 @@ type state = Calm | Charge of int * dir | Stunned of int
 
 let time_charging = 10
 let cooldown_cactus = 20
-let () = Random.self_init ()
+(* let () = Random.self_init () *)
 
 (*detects whether the camel and elephant are on the same line or column,
 returns Some 'the direction the elephant should run toward' if the Camel is in sight,
 and None if it's not*)
-let straight_line camel_pos elephant_pos =
+let straight_line elephant_pos =
   match (!camel_pos, elephant_pos) with
-  | (x1, y1), (x2, y2) when x1 = x2 -> if y1 < y2 then Some Right else Some Left
-  | (x1, y1), (x2, y2) when y1 = y2 -> if x1 < x2 then Some Up else Some Down
+  | (x1, y1), (x2, y2) when x1 = x2 -> if y1 < y2 then Some Up else Some Down
+  | (x1, y1), (x2, y2) when y1 = y2 -> if x1 < x2 then Some Left else Some Right
   | _ -> None
 
 (*defines what the elephant will do depending on its state*)
@@ -26,7 +26,7 @@ let rec elephant (current_position : int * int) (current_state : state)
     (id : int) : unit =
   match current_state with
   | Calm -> begin
-      match straight_line camel_pos current_position with
+      match straight_line current_position with
       | None ->
           let new_pos = move_dir Elephant current_position (random_dir ()) in
           render ();

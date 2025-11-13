@@ -14,11 +14,13 @@ let () = Random.self_init ()
 (** [random_position ()] renvoie une position aléatoire dans le monde*)
 let random_position () : int * int = (Random.int width, Random.int height)
 
+let number_of_cacti = 200
+
 (* Place les cactus et le chameau initialement.*)
 
 let () =
-  for _ = 0 to 200 do
-    set (random_position ()) (Cactus, 0)
+  for _ = 0 to number_of_cacti - 1 do
+    set (random_position ()) (Cactus, -1)
   done
 
 let camel_initial_position = random_position ()
