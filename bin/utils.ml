@@ -80,7 +80,7 @@ let random_dir () : dir =
   | 3 -> Left
   | _ -> Stay
 
-(** [random_dir ()] renvoie une direction cardinale au hasard, mais pas la
+(** [random_dir_no_stay ()] renvoie une direction cardinale au hasard, mais pas la
     direction "immobile" *)
 let random_dir_no_stay () : dir =
   let int_new_dir = Random.int 5 in

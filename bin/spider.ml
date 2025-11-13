@@ -27,7 +27,7 @@ let rec spider_egg (current_position : int * int) (lifetime : int) id : unit =
 
 let rec spider (current_position : int * int) id : unit =
   let (new_position : int * int) =
-    move_dir Spider current_position (random_dir ())
+    move_dir current_position (random_dir ())
   in
   let spawn_egg_bool = Random.int 100 = 0 in
   if spawn_egg_bool then spawn_egg_nearby new_position;

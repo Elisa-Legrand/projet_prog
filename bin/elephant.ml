@@ -28,7 +28,7 @@ let rec elephant (current_position : int * int) (current_state : state)
   | Calm -> begin
       match straight_line_to_camel current_position with
       | None ->
-          let new_pos = move_dir Elephant current_position (random_dir ()) in
+          let new_pos = move_dir current_position (random_dir ()) in
           if safe_perform id then elephant new_pos Calm id
       | Some direction ->
           elephant current_position (Charge (time_charging, direction)) id
@@ -57,6 +57,6 @@ and move_elephant_charge (elephant_pos : int * int) (direction : dir) :
       match get_content (x, y) with
       | Cactus | Invalid -> (elephant_pos, true)
       | _ ->
-          let new_pos = move_dir Elephant elephant_pos direction in
+          let new_pos = move_dir elephant_pos direction in
           render ();
           (new_pos, false))
