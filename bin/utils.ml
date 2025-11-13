@@ -16,42 +16,58 @@ let ( ++ ) ((x, y) : int * int) ((dx, dy) : int * int) : int * int =
     contenu par [Empty]. Entre autres, la fonction place [id] dans [dead_set].
 *)
 let kill (id : int) : unit = dead_ids := IntSet.add id !dead_ids
+
+(** On construit une fonction de comparaison entre les differentes creatures 
+    pour savoir qui sachant qu'on peux ecraser les creatures plus 
+    faibles que nous. 
+    [Invalid] est traité comme un cactus invincible car c'est le type des 
+    cases "extérieures". On empêche par là la sortie des entités. 
+    [Empty] est traité différement comme c'est une case d'air. On ne
+    l'écrit pas ici. *)
+
+(** Si [crea1] est une clé, et de valeur [crea2; crea3], alors [crea1] peut
+    écraser [crea2] et [crea3].*)
+let toughness_dict : (creature, creature list) Hashtbl.t =
+  let dict = Hashtbl.create 10 in
+  begin
+    Hashtbl.add dict Invalid []; (* Invalid est le type des murs extérieurs *)
+    Hashtbl.add dict Cactus [];
+    Hashtbl.add dict Elephant [Snake; Spider; Camel; Spider_Egg];
+    Hashtbl.add dict Snake [Spider; Spider_Egg];
+    Hashtbl.add dict Spider [Camel];
+    Hashtbl.add dict Camel [Snake];
+    Hashtbl.add dict Spider_Egg [];
+  end;
+  dict
+
+(** [can_stomp crea1 crea2] renvoie [true] si crea1 peut écraser crea2.
+    Sinon, renvoie [false]. *)
+let can_stomp (crea1 : creature) (crea2 : creature) =
+  assert (Empty <> crea1 && Invalid <> crea1);
+  assert (Empty <> crea2);
+  assert (Hashtbl.mem toughness_dict crea1);
+  let weaker_creatures = Hashtbl.find toughness_dict crea1 in
+  List.mem crea2 weaker_creatures
+
 (** [move old_pos new_pos] déplace le contenu de la case en [old_pos] vers la
-    case [new_pos]. Si la case [new_pos] est occupé, laisse le monde inchangé.
-    Renvoie [new_pos] si le mouvement a eu lieu, et [old_pos] sinon.*)
-
-(**fonction de comparaison entre les differentes creatures pour savoir qui
-   sachant qu'on peux ecraser les creatures plus faibles que nous*)
-let liste_plus_au_moins_fort =
-  [ Invalid; Cactus; Elephant; Spider; Snake; Camel; Spider_Egg ]
-
-let weaker crea1 crea2 =
-  let rec aux l =
-    match l with
-    | [] -> failwith "comparaison de deux empty"
-    | h :: _ when h = crea1 -> false
-    | h :: _ when h = crea2 -> true
-    | _ :: t -> aux t
-  in
-  aux liste_plus_au_moins_fort
-
+  case [new_pos]. Si la case [new_pos] est occupé, laisse le monde inchangé.
+  Renvoie [new_pos] si le mouvement a eu lieu, et [old_pos] sinon.*)
 let move (crea : creature) (old_position : int * int) (new_position : int * int)
     : int * int =
-  match get new_position with
-  | Empty, _ ->
+  match get_content new_position with
+  | Empty ->
       let character = get old_position in
       set old_position (Empty, invalid_id);
       set new_position character;
       new_position
-  | crea_renc, _ when weaker crea crea_renc -> old_position
-  | _ ->
-      let x, y = new_position in
-      let _, id_tue = world.(x).(y) in
+  | reached_creature when can_stomp crea reached_creature ->
+      let id_tue = get_id new_position in
       kill id_tue;
       let character = get old_position in
       set old_position (Empty, invalid_id);
       set new_position character;
       new_position
+  | _ -> old_position
 
 (** [random_dir ()] renvoie une direction cardinale au hasard.*)
 let random_dir () : dir =
@@ -75,6 +91,7 @@ let dir_to_couple (direc : dir) : int * int =
 let move_dir (crea : creature) (old_pos : int * int) (direc : dir) : int * int =
   move crea old_pos (old_pos ++ dir_to_couple direc)
 
+(* Compteur privé pour l'identifiant *)
 let _id = ref 0
 
 (**renvoie le prochian identifiant libre*)
