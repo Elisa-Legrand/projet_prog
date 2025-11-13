@@ -12,9 +12,8 @@ let () = Random.self_init ()
 let ( ++ ) ((x, y) : int * int) ((dx, dy) : int * int) : int * int =
   (x + dx, y + dy)
 
-(** [kill id] tue le processus de l'objet d'identifiant [id], et remplace le
-    contenu par [Empty]. Entre autres, la fonction place [id] dans [dead_set].
-*)
+(** [kill id] tue le processus de l'objet d'identifiant [id]. Entre autres, la
+    fonction place [id] dans [dead_set]. *)
 let kill (id : int) : unit = dead_ids := IntSet.add id !dead_ids
 
 (** On construit une fonction de comparaison entre les differentes creatures
@@ -85,8 +84,8 @@ let random_dir () : dir =
   | 3 -> Left
   | _ -> Stay
 
-(** [random_dir_no_stay ()] renvoie une direction cardinale au hasard, mais pas la
-    direction "immobile" *)
+(** [random_dir_no_stay ()] renvoie une direction cardinale au hasard, mais pas
+    la direction "immobile" *)
 let random_dir_no_stay () : dir =
   let int_new_dir = Random.int 5 in
   match int_new_dir with 0 -> Up | 1 -> Down | 2 -> Right | _ -> Left
@@ -114,7 +113,7 @@ let _id = ref 0
 
 (**renvoie le prochian identifiant libre*)
 let prochain_id () : int =
-  _id := !_id + 1;
+  incr _id;
   !_id
 
 let id_courant () : int = !_id
@@ -135,8 +134,3 @@ let get_random_empty_adjacent_cell (position : int * int) : int * int =
   else
     let idx = Random.int len in
     adjacent_cells.(idx)
-
-(** [spawn position entity] conjure une [entity] à la case [position], même si
-    la case est déjà remplie. *)
-let spawn (position : int * int) (entity : creature) : unit =
-  set position (entity, prochain_id ())
