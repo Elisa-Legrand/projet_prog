@@ -52,8 +52,9 @@ let can_stomp (crea1 : creature) (crea2 : creature) =
     case [new_pos]. Si la case [new_pos] est occupé, si la créature contenue
     dans [old_pos] peut écraser celle en [new_pos] d'après [toughness_dict],
     alors il y a écrasement et déplacement. Sinon rien ne se passe. *)
-let move (crea : creature) (old_position : int * int) (new_position : int * int)
+let move (old_position : int * int) (new_position : int * int)
     : int * int =
+  let crea = get_content old_position in
   match get_content new_position with
   | Empty ->
       let character = get old_position in
@@ -69,9 +70,14 @@ let move (crea : creature) (old_position : int * int) (new_position : int * int)
       new_position
   | _ -> old_position
 
-(** [random_dir ()] renvoie une direction cardinale au hasard.*)
+(** [random_dir ()] renvoie une direction cardinale au hasard, ou la direction "immobile" *)
 let random_dir () : dir =
-  let int_new_dir = Random.int 4 in
+  let int_new_dir = Random.int 5 in
+  match int_new_dir with 0 -> Up | 1 -> Down | 2 -> Right | 3 -> Left | _ -> Stay
+
+(** [random_dir ()] renvoie une direction cardinale au hasard, mais pas la direction "immobile" *)
+let random_dir_no_stay () : dir =
+  let int_new_dir = Random.int 5 in
   match int_new_dir with 0 -> Up | 1 -> Down | 2 -> Right | _ -> Left
 
 (** [dir_to_couple direc] convertit une direction cardinale en son couple
@@ -89,8 +95,8 @@ let dir_to_couple (direc : dir) : int * int =
     contenue dans [old_pos] peut écraser celle atteinte d'après
     [toughness_dict], alors il y a écrasement et déplacement. Sinon rien ne se
     passe. *)
-let move_dir (crea : creature) (old_pos : int * int) (direc : dir) : int * int =
-  move crea old_pos (old_pos ++ dir_to_couple direc)
+let move_dir (old_pos : int * int) (direc : dir) : int * int =
+  move old_pos (old_pos ++ dir_to_couple direc)
 
 (* Compteur privé pour l'identifiant *)
 let _id = ref 0
