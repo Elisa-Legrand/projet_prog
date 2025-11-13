@@ -125,13 +125,7 @@ let get_random_empty_adjacent_cell (position : int * int) : int * int =
     let idx = Random.int len in
     adjacent_cells.(idx)
 
-<<<<<<< HEAD
-let spawn position entity =
-  set position (entity, prochain_id())
-;;
-=======
 (** [spawn position entity] conjure une [entity] à la case [position], même si
     la case est déjà remplie. *)
 let spawn (position : int * int) (entity : creature) : unit =
   set position (entity, prochain_id ())
->>>>>>> 7c5618ab9df75cc023f830363b6dd9400ea9e196
