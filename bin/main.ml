@@ -21,7 +21,7 @@ let number_of_cacti = 200
 
 let () =
   for _ = 0 to number_of_cacti - 1 do
-    spawn (random_position ()) Cactus
+    set (random_position ()) (Cactus, invalid_id)
   done
 
 let spider_initial_position = random_position ()
