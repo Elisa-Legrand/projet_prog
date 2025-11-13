@@ -49,8 +49,9 @@ let can_stomp (crea1 : creature) (crea2 : creature) =
   List.mem crea2 weaker_creatures
 
 (** [move old_pos new_pos] déplace le contenu de la case en [old_pos] vers la
-    case [new_pos]. Si la case [new_pos] est occupé, laisse le monde inchangé.
-    Renvoie [new_pos] si le mouvement a eu lieu, et [old_pos] sinon.*)
+    case [new_pos]. Si la case [new_pos] est occupé, si la créature contenue
+    dans [old_pos] peut écraser celle en [new_pos] d'après [toughness_dict],
+    alors il y a écrasement et déplacement. Sinon rien ne se passe. *)
 let move (crea : creature) (old_position : int * int) (new_position : int * int)
     : int * int =
   match get_content new_position with
@@ -84,9 +85,10 @@ let dir_to_couple (direc : dir) : int * int =
   | Stay -> (0, 0)
 
 (** [move_dir old_pos direc] déplace le contenu de la case en [old_pos] une case
-    vers la direction [direc]. Si la case atteinte est occupée, laisse le monde
-    inchangé. Renvoie la nouvelle position si le mouvement a eu lieu, et
-    [old_pos] sinon.*)
+    vers la direction [direc]. Si la case atteinte est occupée, si la créature
+    contenue dans [old_pos] peut écraser celle atteinte d'après
+    [toughness_dict], alors il y a écrasement et déplacement. Sinon rien ne se
+    passe. *)
 let move_dir (crea : creature) (old_pos : int * int) (direc : dir) : int * int =
   move crea old_pos (old_pos ++ dir_to_couple direc)
 
@@ -117,6 +119,13 @@ let get_random_empty_adjacent_cell (position : int * int) : int * int =
     let idx = Random.int len in
     adjacent_cells.(idx)
 
+<<<<<<< HEAD
 let spawn position entity =
   set position (entity, prochain_id())
 ;;
+=======
+(** [spawn position entity] conjure une [entity] à la case [position], même si
+    la case est déjà remplie. *)
+let spawn (position : int * int) (entity : creature) : unit =
+  set position (entity, prochain_id ())
+>>>>>>> 7c5618ab9df75cc023f830363b6dd9400ea9e196
