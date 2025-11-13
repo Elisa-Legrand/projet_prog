@@ -5,6 +5,7 @@ open Player
 open Engine
 open Snake
 open Elephant
+open Spider
 
 (* Initialisation du monde *)
 
@@ -32,10 +33,17 @@ let () =
     (fun () -> player (fun () -> camel camel_initial_position (id_courant ())))
     queue
 
+let spider_initial_position = random_position ()
+let () = set spider_initial_position (Spider, prochain_id ())
+
+let () = 
+  Queue.add
+    (fun () -> player (fun () -> spider spider_initial_position (id_courant ())))
+    queue
+(* La file contient deux chameaux pour tester *)
+
 let snake_initial_position = random_position ()
 let () = set snake_initial_position (Snake, prochain_id ())
-
-(* La file contient deux chameaux pour tester *)
 
 let () =
   Queue.add
