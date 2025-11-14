@@ -30,8 +30,7 @@ let () = set spider_initial_position (Spider, prochain_id ())
 let () =
   let id = id_courant () in
   Queue.add
-    (fun () ->
-      player (fun () -> spider spider_initial_position (id)))
+    (fun () -> player (fun () -> spider spider_initial_position id))
     queue
 (* La file contient deux chameaux pour tester *)
 
@@ -40,9 +39,7 @@ let () = set snake_initial_position (Snake, prochain_id ())
 
 let () =
   let id = id_courant () in
-  Queue.add
-    (fun () -> player (fun () -> snake snake_initial_position (id)))
-    queue
+  Queue.add (fun () -> player (fun () -> snake snake_initial_position id)) queue
 
 let elephant_initial_position = random_position ()
 let () = set elephant_initial_position (Elephant, prochain_id ())
@@ -52,8 +49,7 @@ let () = set elephant_initial_position (Elephant, prochain_id ())
 let () =
   let id = id_courant () in
   Queue.add
-    (fun () ->
-      player (fun () -> elephant elephant_initial_position Calm (id)))
+    (fun () -> player (fun () -> elephant elephant_initial_position Calm id))
     queue
 
 let camel_initial_position = random_position ()
@@ -62,9 +58,7 @@ let () = set camel_initial_position (Camel, prochain_id ())
 
 let () =
   let id = id_courant () in
-  Queue.add
-    (fun () -> player (fun () -> camel camel_initial_position (id)))
-    queue
+  Queue.add (fun () -> player (fun () -> camel camel_initial_position id)) queue
 
 (* Début du jeu *)
 let () = run_queue ()
@@ -72,5 +66,3 @@ let () = run_queue ()
 
 
 (*Fin du jeu*)
-
-

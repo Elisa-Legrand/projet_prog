@@ -8,8 +8,8 @@ type creature =
   | Snake
   | Elephant
   | Invalid
-  |Angry_Elephant
-  |Stunned_Elephant
+  | Angry_Elephant
+  | Stunned_Elephant
 
 type cell = creature * int
 

@@ -1,9 +1,11 @@
 open World
 open Engine
+open Pqueue
 
 type dir = Up | Down | Right | Left | Stay
 
 exception No_adjacent_space
+exception No_path_found
 
 (** Déplacement d'une entité *)
 let () = Random.self_init ()
@@ -35,20 +37,19 @@ let toughness_dict : (creature, creature list) Hashtbl.t =
     Hashtbl.add dict Stunned_Elephant [];
     Hashtbl.add dict Snake [ Spider; Spider_Egg ];
     Hashtbl.add dict Spider [ Camel ];
-    Hashtbl.add dict Camel [ Snake ;Stunned_Elephant;Spider_Egg];
+    Hashtbl.add dict Camel [ Snake; Stunned_Elephant; Spider_Egg ];
     Hashtbl.add dict Spider_Egg [];
-    Hashtbl.add dict Empty [];
+    Hashtbl.add dict Empty []
   end;
   dict
 
 (** [can_stomp crea1 crea2] renvoie [true] si crea1 peut écraser crea2. Sinon,
     renvoie [false]. *)
 
-    (**assert (Empty <> crea1 && Invalid <> crea1);
+let can_stomp (crea1 : creature) (crea2 : creature) =
+  (*assert (Empty <> crea1 && Invalid <> crea1);
   assert (Empty <> crea2);
   assert (Hashtbl.mem toughness_dict crea1);*)
-let can_stomp (crea1 : creature) (crea2 : creature) =
-  
   let weaker_creatures = Hashtbl.find toughness_dict crea1 in
   List.mem crea2 weaker_creatures
 
@@ -135,3 +136,79 @@ let get_random_empty_adjacent_cell (position : int * int) : int * int =
     let idx = Random.int len in
     adjacent_cells.(idx)
 
+let get_walkable_adjacent_cells (crea : creature) ((x, y) : int * int) :
+    (int * int) list =
+  List.filter
+    (fun (x, y) ->
+      let target_crea = get_content (x, y) in
+      target_crea = Empty || can_stomp crea target_crea)
+    (get_adjacent_cells (x, y))
+
+(** [a_star crea src dest] renvoie une liste de cases successives, si elle
+    existe, que [crea] doit parcourir pour atteindre [dest] à partir de [src] en
+    utilisant l'algorithme A*, munie de la distance de Manhattan comme
+    heuristique. La fonction enclenche [No_path_found] si il n'y a pas de chemin
+    de [src] à [dist]. La donnée de [crea] permet de savoir sur quelle case on
+    peut marcher. *)
+let a_star (crea : creature) (src : int * int) (dest : int * int) :
+    (int * int) list =
+  assert (crea <> Empty && crea <> Invalid && crea <> Cactus);
+  let pq = pqueue_create () in
+  let dist_from_src = Hashtbl.create (width * height) in
+  let parent = Hashtbl.create (width * height) in
+  Hashtbl.add dist_from_src src 0;
+  Hashtbl.add parent src src;
+
+  let manhattan_distance ((x1, y1) : int * int) ((x2, y2) : int * int) : int =
+    abs (x1 - y1) + abs (x2 - y2)
+  in
+
+  let get_dist_from_src ((x, y) : int * int) : int =
+    match Hashtbl.find_opt dist_from_src (x, y) with
+    | Some d -> d
+    | None -> max_int
+  in
+
+  let is_explored ((x, y) : int * int) : bool =
+    get_dist_from_src (x, y) <> max_int
+  in
+
+  let priority ((x, y) : int * int) : int =
+    get_dist_from_src (x, y) + manhattan_distance (x, y) dest
+  in
+
+  let rec treat_neighbors (curr : int * int) (neighbors : (int * int) list) =
+    match neighbors with
+    | [] -> ()
+    | neighbor :: q ->
+        if not (is_explored neighbor) then (
+          let d_no_deviation = get_dist_from_src neighbor in
+          let d_deviation = 1 + get_dist_from_src curr in
+          (* la distance entre curr et neighbor est 1, ils sont côtes à côtes... *)
+          if d_deviation < d_no_deviation then begin
+            Hashtbl.replace dist_from_src neighbor d_deviation;
+            Hashtbl.replace parent neighbor curr
+          end;
+          pqueue_add pq (priority neighbor) neighbor;
+          treat_neighbors curr q)
+    (* la priorité est mise à jour si neighbor est déjà dedans *)
+  in
+
+  (* [_aux_reconstruct_path cell] donne le chemin de [src] à [cell] *)
+  let rec _aux_reconstruct_path cell =
+    if cell = src then [ src ]
+    else cell :: _aux_reconstruct_path (Hashtbl.find parent cell)
+  in
+  let reconstruct_path () = List.rev (_aux_reconstruct_path dest) in
+
+  pqueue_add pq (get_dist_from_src src) src;
+
+  let found_dest = ref false in
+  while (not (pqueue_is_empty pq)) || not !found_dest do
+    let current_cell = pqueue_pop pq in
+    if current_cell <> dest then
+      let neighbors = get_walkable_adjacent_cells crea current_cell in
+      treat_neighbors current_cell neighbors
+    else found_dest := true
+  done;
+  if !found_dest then reconstruct_path () else raise No_path_found

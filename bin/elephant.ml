@@ -13,9 +13,7 @@ let cooldown_cactus = 20
 (* let () = Random.self_init () *)
 
 (**renvoye|x-y|*)
-let dist (x: int) (y:int):int =
-    if x>y then x-y
-    else y-x
+let dist (x : int) (y : int) : int = if x > y then x - y else y - x
 
 (**renvoie vrai si il y'a un cactus entre x,y1 et x,y2 si xco1 
                                           y1,x et y2,x sinon*)
@@ -51,30 +49,30 @@ let rec elephant (current_position : int * int) (current_state : state)
           let new_pos = move_dir current_position (random_dir ()) in
           if safe_perform id then elephant new_pos Calm id
       | Some direction ->
-          set current_position (Angry_Elephant,id);
+          set current_position (Angry_Elephant, id);
           elephant current_position (Charge (time_charging, direction)) id
     end
   | Charge (n, direction) when n = 1 ->
       let new_pos, stun = move_elephant_charge current_position direction in
       if stun then begin
-        set current_position (Stunned_Elephant,id);
+        set current_position (Stunned_Elephant, id);
         elephant current_position (Stunned (cooldown_cactus + 1)) id
       end
       else if safe_perform id then begin
-        set new_pos (Elephant,id);
+        set new_pos (Elephant, id);
         elephant new_pos Calm id
       end
   | Charge (n, direction) when n > 1 ->
       let new_pos, stun = move_elephant_charge current_position direction in
       if stun then begin
-        set current_position (Stunned_Elephant,id);
+        set current_position (Stunned_Elephant, id);
         elephant current_position (Stunned (cooldown_cactus + 1)) id
       end
       else if safe_perform id then
         elephant new_pos (Charge (n - 1, direction)) id
   | Stunned n when n = 1 ->
       if safe_perform id then begin
-        set current_position (Elephant,id);
+        set current_position (Elephant, id);
         elephant current_position Calm id
       end
   | Stunned n when n > 1 ->
