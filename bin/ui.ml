@@ -14,6 +14,8 @@ let string_of_cell : cell -> string = function
   | Angry_Elephant, _ -> "\u{1F621}"
   | Stunned_Elephant, _ -> "\u{1F635}"
   | Robot, _ -> "\u{1F916}"
+  | Boost , _ -> "\u{1F9EA}"
+  | SuperCamel , _ -> "\u{1F9B8}"
   | Zero,_ -> "\u{0030}\u{FE0F}\u{20E3}" 
   | Un,_ -> "\u{0031}\u{FE0F}\u{20E3}" 
   | Deux,_ -> "\u{0032}\u{FE0F}\u{20E3}" 

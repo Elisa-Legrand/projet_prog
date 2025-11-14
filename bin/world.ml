@@ -11,6 +11,8 @@ type creature =
   | Angry_Elephant
   | Stunned_Elephant
   | Robot
+  | Boost
+  | SuperCamel
   | Zero
   | Un
   | Deux

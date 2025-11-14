@@ -41,10 +41,11 @@ let toughness_dict : (creature, creature list) Hashtbl.t =
     Hashtbl.add dict Stunned_Elephant [];
     Hashtbl.add dict Snake [ Spider; Spider_Egg ];
     Hashtbl.add dict Spider [ Camel ];
-    Hashtbl.add dict Camel [ Snake; Stunned_Elephant; Spider_Egg ];
+    Hashtbl.add dict Camel [ Snake; Stunned_Elephant; Spider_Egg;Boost ];
     Hashtbl.add dict Robot [ Snake; Stunned_Elephant; Spider_Egg; Elephant; Spider; Camel];
     Hashtbl.add dict Spider_Egg [];
-    Hashtbl.add dict Empty []
+    Hashtbl.add dict Empty [];
+    Hashtbl.add dict SuperCamel [Spider;Spider_Egg;Snake;Elephant;Angry_Elephant;Stunned_Elephant;Robot;Boost]
   end;
   dict
 
@@ -251,4 +252,5 @@ let chiffre_to_creature (i:int) =
   set (width+2,pos) ((chiffre_to_creature unite),invalid_id)
 
   let update_temps (i:int):unit= update i 1
-  let update_vague (i:int):unit =update i 3
+  let update_vague (i:int):unit = update i 3
+  let update_power_up (i:int):unit = update i 5

@@ -39,6 +39,7 @@ let temps_avant_prochaine_vague = ref 0
 let rec systeme_vague():unit =
     render();
     if !temps_avant_prochaine_vague =0 then begin
+            spawn Boost;
         for _ =0 to (!nb_vague) do
             spawn Spider;
             spawn Elephant;

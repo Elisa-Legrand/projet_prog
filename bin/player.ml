@@ -40,12 +40,25 @@ let end_of_game score =
   print_string "\n\n\n\n";
   exit 0
 
+
+let power_up = ref 0 
+
 (** [caml current_pos] effectue tous les prochains tours du chameau à partir de
     la position [current_pos] (attendre une entrée, se déplacer en conséquence,
     recommencer)*)
 let rec camel (current_position : int * int) (id : int) : unit =
+
   number_of_turn_played := !number_of_turn_played + 1;
-  let new_position = move_dir current_position (keyboard_direction ()) in
+  let dir1 = keyboard_direction() in
+    if (get_content (current_position ++ dir_to_couple(dir1))) = Boost then begin
+      set current_position (SuperCamel,id); 
+      power_up := 20
+      end;
+    if !power_up <> 0 then power_up := !power_up -1;
+    if !power_up = 0 then set current_position (Camel,id);
+    update_power_up !power_up;
+
+  let new_position = move_dir current_position (dir1) in
   camel_pos := new_position;
   if safe_perform id then camel new_position id
   else end_of_game !number_of_turn_played
