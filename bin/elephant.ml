@@ -17,6 +17,7 @@ let dist (x: int) (y:int):int =
     if x>y then x-y
     else y-x
 
+(*     
 let is cactus_entre (x_co1:bool) (x:int) (y1:int) (y2:int) :bool=
     let b =ref false in
     let c = ref (Empty,0) in
@@ -30,7 +31,7 @@ let is cactus_entre (x_co1:bool) (x:int) (y1:int) (y2:int) :bool=
 let is_cactus_entre (pos1: int*int) (pos2 :int*int) (dir: int*int):bool =
     match (dir,pos1,pos2) with
     |(0,_)
-    |(_,0)->
+    |(_,0)-> *)
 
 (*detects whether the camel and elephant are on the same line or column,
 returns Some 'the direction the elephant should run toward' if the Camel is in sight,
