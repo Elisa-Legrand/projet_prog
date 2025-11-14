@@ -22,19 +22,18 @@ let rec spider_egg (current_position : int * int) (lifetime : int) id : unit =
     if lifetime mod spider_egg_cooldown = 0 then
       let pos_baby = get_random_empty_adjacent_cell current_position in
       spawn_spider pos_baby
-  with No_adjacent_space -> ()
-  end;
-  (* Printf.eprintf
-    "[SPIDER_EGG] I am a spider_egg with id %d and \
-     lifetime %d, and I check if I need to die.\n" id lifetime;  *)
-  if lifetime >= spider_egg_lifetime then begin
-    (* Printf.eprintf
-    "[SPIDER_EGG] I am a spider_egg with id %d and \
-     lifetime %d, and I want to kill myself\n" id lifetime;  *)
-    assert (get_content current_position = Spider_Egg);
-    kill_and_clean current_position
-  end
-  else if safe_perform id then spider_egg current_position (lifetime + 1) id
+    end
+  else ();
+    if lifetime >= spider_egg_lifetime then begin kill id;
+                                      set current_position (Empty,invalid_id)
+                                      end;
+    if safe_perform id then spider_egg current_position (lifetime+1) id
+  with |No_adjacent_space ->
+    if lifetime >= spider_egg_lifetime then begin kill id;
+                                        set current_position (Empty,invalid_id);
+                                        end;
+    if safe_perform id then spider_egg current_position (lifetime) id
+    
 
 and spider (current_position : int * int) id : unit =
   (* Printf.eprintf "[SPIDER] I am a spider with id %d in position (%d, %d)\n" id x
