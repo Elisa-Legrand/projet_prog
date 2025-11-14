@@ -135,12 +135,13 @@ let get_adjacent_cells ((x, y) : int * int) : (int * int) list =
     aléatoire vide à côté si elle existe. Sinon elle lève l'exception
     [No_adjacent_space].*)
 let get_random_empty_adjacent_cell (position : int * int) : int * int =
-  let adjacent_cells = Array.of_list (get_adjacent_cells position) in
-  let len = Array.length adjacent_cells in
+  let empty_cells = List.filter (fun cell -> get_content cell = Empty) (get_adjacent_cells position) in
+  let adjacent_empty_cells = Array.of_list empty_cells in
+  let len = Array.length adjacent_empty_cells in
   if len = 0 then raise No_adjacent_space
   else
     let idx = Random.int len in
-    adjacent_cells.(idx)
+    adjacent_empty_cells.(idx)
 
 let get_walkable_adjacent_cells (crea : creature) ((x, y) : int * int) :
     (int * int) list =
