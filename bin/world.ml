@@ -10,6 +10,7 @@ type creature =
   | Invalid
   | Angry_Elephant
   | Stunned_Elephant
+  | Robot
 
 type cell = creature * int
 

@@ -34,11 +34,12 @@ let toughness_dict : (creature, creature list) Hashtbl.t =
     (* Invalid est le type des murs extérieurs *)
     Hashtbl.add dict Cactus [];
     Hashtbl.add dict Elephant [ Snake; Spider; Camel; Spider_Egg ];
-    Hashtbl.add dict Angry_Elephant [ Snake; Spider; Camel; Spider_Egg ];
+    Hashtbl.add dict Angry_Elephant [ Snake; Spider; Camel; Spider_Egg ; Robot];
     Hashtbl.add dict Stunned_Elephant [];
     Hashtbl.add dict Snake [ Spider; Spider_Egg ];
     Hashtbl.add dict Spider [ Camel ];
     Hashtbl.add dict Camel [ Snake; Stunned_Elephant; Spider_Egg ];
+    Hashtbl.add dict Robot [ Snake; Stunned_Elephant; Spider_Egg; Elephant; Spider; Camel];
     Hashtbl.add dict Spider_Egg [];
     Hashtbl.add dict Empty []
   end;
@@ -219,3 +220,11 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
     else found_dest := true
   done;
   if !found_dest then reconstruct_path () else raise No_path_found
+
+let a_star_get_next_cell crea src dest =
+  match a_star crea src dest with 
+  | [] -> failwith "Empty path"
+  | [_] -> failwith "Already on destination"
+  | _::b::_ -> b
+  | exception No_path_found -> raise No_path_found
+

@@ -48,6 +48,8 @@ let rec camel (current_position : int * int) (id : int) : unit =
   else end_of_game !number_of_turn_played
 
 let spawn_camel pos =
+  camel_pos := pos;
+  camel_is_alive := true;
   let id = prochain_id () in
   set pos (Camel, id);
   Queue.add (fun () -> player (fun () -> camel pos id)) queue
