@@ -1,7 +1,9 @@
 open Notty
 open World
 
-(** Affichage du contenu d'une cellule.*)
+(** Affichage du contenu d'une cellule.
+les cas jusqu'à zero sont les entité utilisées par le jeu, 
+le reste est simplement à but d'affichage des variables.*)
 let string_of_cell : cell -> string = function
   | Empty, _ -> "  "
   | Cactus, _ -> "\u{1F335}"
@@ -30,14 +32,6 @@ let string_of_cell : cell -> string = function
   | Temps,_ -> "Temps avant prochaine vague:"
   | Vague,_ -> "Vague:"
   | Power_up,_ -> "Temps restant de power_up:"
-
-(* Codes des emojis pour les animaux pertinents
-   serpent : "\u{1F40D}"
-   éléphant : "\u{1F418}"
-   araignée : "\u{1F577}"
-   oeuf : "\u{1F95A}"
-   Des sites comme l'emojipedia peuvent vous donner plus de codes.
-*)
 
 (** Fonctions de création de l'image correspondant à l'état actuel du monde.*)
 let draw_cell (c : cell) : image = I.string A.empty (string_of_cell c)

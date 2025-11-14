@@ -13,6 +13,7 @@ let rec snake (current_position : int * int) (id : int) : unit =
   let new_position = move_dir current_position (random_dir ()) in
   if safe_perform id then snake new_position id
 
+(*fait apparaitre un serpent*)
 let spawn_snake pos =
   let id = prochain_id () in
   set pos (Snake, id);

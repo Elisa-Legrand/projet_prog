@@ -39,9 +39,9 @@ let toughness_dict : (creature, creature list) Hashtbl.t =
     Hashtbl.add dict Elephant [ Snake; Spider; Camel; Spider_Egg ];
     Hashtbl.add dict Angry_Elephant [ Snake; Spider; Camel; Spider_Egg ; Robot];
     Hashtbl.add dict Stunned_Elephant [];
-    Hashtbl.add dict Snake [ Spider; Spider_Egg ];
+    Hashtbl.add dict Snake [ Spider; Spider_Egg;Camel ];
     Hashtbl.add dict Spider [ Camel ];
-    Hashtbl.add dict Camel [ Snake; Stunned_Elephant; Spider_Egg;Boost ];
+    Hashtbl.add dict Camel [Stunned_Elephant; Spider_Egg;Boost ];
     Hashtbl.add dict Robot [ Snake; Stunned_Elephant; Spider_Egg; Elephant; Spider; Camel];
     Hashtbl.add dict Spider_Egg [];
     Hashtbl.add dict Empty [];
@@ -49,6 +49,7 @@ let toughness_dict : (creature, creature list) Hashtbl.t =
   end;
   dict
 
+(*tue l'entité en pos et efface son sprite*)
 let kill_and_clean pos =
   let id = get_id pos in
   _kill id;
@@ -58,9 +59,9 @@ let kill_and_clean pos =
     renvoie [false]. *)
 
 let can_stomp (crea1 : creature) (crea2 : creature) =
-  (*assert (Empty <> crea1 && Invalid <> crea1);
+  assert (Empty <> crea1 && Invalid <> crea1);
   assert (Empty <> crea2);
-  assert (Hashtbl.mem toughness_dict crea1);*)
+  assert (Hashtbl.mem toughness_dict crea1);
   let weaker_creatures = Hashtbl.find toughness_dict crea1 in
   List.mem crea2 weaker_creatures
 
@@ -128,9 +129,11 @@ let prochain_id () : int =
   incr _id;
   !_id
 
+
 let id_courant () : int = !_id
 let is_empty (position : int * int) : bool = get position = (Empty, invalid_id)
 
+(*renvoie la liste des cases adjacentes (si en bord de plateau n'en renvoie pas 4)*)
 let get_adjacent_cells ((x, y) : int * int) : (int * int) list =
   List.filter
     (fun (x, y) -> 0 <= x && x < height && 0 <= y && y < width)
@@ -148,6 +151,7 @@ let get_random_empty_adjacent_cell (position : int * int) : int * int =
     let idx = Random.int len in
     adjacent_empty_cells.(idx)
 
+(*renvoie toute les cases ou la creature peut aller ie soit tué ce qui y'était soit il n'y avai rine sur cette case*)
 let get_walkable_adjacent_cells (crea : creature) ((x, y) : int * int) :
     (int * int) list =
   List.filter
@@ -232,6 +236,8 @@ let a_star_get_next_cell crea src dest =
   | _::b::_ -> b
   | exception No_path_found -> raise No_path_found
 
+
+(*fonction utilise dans l'affichage du score, vu comme des creatures à droite de la ligne de cactus*)
 let chiffre_to_creature (i:int) =
   match i with
   |0-> Zero
@@ -245,6 +251,8 @@ let chiffre_to_creature (i:int) =
   |8-> Huit
   |9-> Neuf
   |_->failwith "pas un chiffre"
+
+  (*fonction d'affichage des variables.*)
   let update (i:int) (pos :int) :unit=
   let dizaine = i/10 in
   let unite = i mod 10 in

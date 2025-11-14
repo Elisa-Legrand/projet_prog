@@ -6,9 +6,8 @@ open Effect.Deep
 open Engine
 open World
 
+(*le score est le nombre de tour joué, cette variable traque donc cette quantité*)
 let number_of_turn_played = ref 0
-
-
 
 (** [keyboard_direction ()] attend un évènement dans le terminal. Si ECHAP est
     pressée, arrête le jeu. Si une touche directionnelle est pressée, renvoie le
@@ -23,6 +22,7 @@ let keyboard_direction () : dir =
   | `Key (`Arrow `Up, _) -> Up
   | _ -> Stay
 
+(*affichage de fin de jeu*)
 let end_of_game score =
   print_string
     "\n\
@@ -40,12 +40,14 @@ let end_of_game score =
   print_string "\n\n\n\n";
   exit 0
 
-
+(*variable traquant le temps restant en SuperCamel*)
 let power_up = ref 0 
 
 (** [caml current_pos] effectue tous les prochains tours du chameau à partir de
     la position [current_pos] (attendre une entrée, se déplacer en conséquence,
-    recommencer)*)
+    recommencer)
+    gère aussi le système de score pour pouvoir l'afficher quand il meurt
+    enfin verifie si il va sur un boost et si oui se transforme en super chameau*)
 let rec camel (current_position : int * int) (id : int) : unit =
 
   number_of_turn_played := !number_of_turn_played + 1;
@@ -64,6 +66,7 @@ let rec camel (current_position : int * int) (id : int) : unit =
   if safe_perform id then camel new_position id
   else end_of_game !number_of_turn_played
 
+(*fait apparaitre un chameau*) 
 let spawn_camel pos =
   camel_pos := pos;
   camel_is_alive := true;

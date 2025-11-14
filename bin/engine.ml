@@ -8,14 +8,15 @@ module IntSet = Set.Make(Int)
     son tour.*)
 type _ Effect.t += End_of_turn: unit t
 
+(*var globales declarées ici car utilisées par d'autre fichier que player.ml*)
+let camel_pos = ref (-1, -1) 
+let camel_is_alive = ref false  
+
 (** File de threads
    [queue] contient toutes les entités en attente de leur prochain tour, 
    sous forme de fonctions [ia]. Pour chaque entité, [ia ()] va jouer le code de l'entité
    correspondant à son prochain tour. *)
 let queue : (unit -> unit) Queue.t = Queue.create ()
-
-let camel_pos = ref (-1, -1) (* sera mis à jour dans spawn_camel *)
-let camel_is_alive = ref false  (* sera mis true dans spawn_camel *)
 
 (** Set des identifiants des créatures mortes. *)
 let dead_ids = ref IntSet.empty

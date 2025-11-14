@@ -15,7 +15,7 @@ let cooldown_cactus = 20
 (**renvoye|x-y|*)
 let dist (x : int) (y : int) : int = if x > y then x - y else y - x
 
-(**renvoie vrai si il y'a un cactus entre x,y1 et x,y2 si xco1 
+(*renvoie vrai si il y'a un cactus entre x,y1 et x,y2 si xco1 
                                           y1,x et y2,x sinon*)
 let cactus_entre (x_co1:bool) (x:int) (y1:int) (y2:int) :bool=
     let b =ref false in
@@ -30,16 +30,17 @@ let cactus_entre (x_co1:bool) (x:int) (y1:int) (y2:int) :bool=
     done;
     !b
 
-(*detects whether the camel and elephant are on the same line or column,
-returns Some 'the direction the elephant should run toward' if the Camel is in sight,
-and None if it's not*)
+(*Détecte si le chameau est vu par l'éléphant, c'est à dire si ils sont sur la même ligne ou la même colonne;
+à moins de 10 cases l'un de l'autre et qu'il n'y a pas de cactus entre eux .
+renvoie Some 'la direction vers laquelle l'elephant devrait courir si le chameau est vu
+et None sinon*)
 let straight_line_to_camel elephant_pos =
   match (!camel_pos, elephant_pos) with
   | (x1, y1), (x2, y2) when x1 = x2 && (dist y1 y2) <=10 && not(cactus_entre true x1 y1 y2)-> if y1 < y2 then Some Up else Some Down
   | (x1, y1), (x2, y2) when y1 = y2 && (dist x1 x2) <=10 && not(cactus_entre false y1 x1 x2)-> if x1 < x2 then Some Left else Some Right
   | _ -> None
 
-(*defines what the elephant will do depending on its state*)
+(*defini ce que l'elephant fera en fonction de son etat*)
 let rec elephant (current_position : int * int) (current_state : state)
     (id : int) : unit =
   match current_state with
@@ -79,8 +80,8 @@ let rec elephant (current_position : int * int) (current_state : state)
       if safe_perform id then elephant current_position (Stunned (n - 1)) id
   | _ -> failwith "strange"
 
-(*moves the charging elephant where it needs to be if possible.
-If an entity other than a Cactus is on its way, it will kill it.*)
+(*déplace l'éléphant dans la direction chargée.
+Si un cactus est sur la route, passe l'éléphant en etat étourdi*)
 and move_elephant_charge (elephant_pos : int * int) (direction : dir) :
     (int * int) * bool =
   match elephant_pos ++ dir_to_couple direction with
@@ -90,6 +91,7 @@ and move_elephant_charge (elephant_pos : int * int) (direction : dir) :
       | _ ->
           let new_pos = move_dir elephant_pos direction in
           (new_pos, false))
+
 
 let spawn_elephant pos =
   let id = prochain_id () in
