@@ -14,9 +14,10 @@ let () = Random.self_init ()
 let ( ++ ) ((x, y) : int * int) ((dx, dy) : int * int) : int * int =
   (x + dx, y + dy)
 
-(** [kill id] tue le processus de l'objet d'identifiant [id]. Entre autres, la
-    fonction place [id] dans [dead_set]. *)
-let kill (id : int) : unit = dead_ids := IntSet.add id !dead_ids
+(** [_kill id] tue le processus de l'objet d'identifiant [id]. Entre autres, la
+    fonction place [id] dans [dead_set]. Ne CLEAN pas le sprite. Doit être
+    utilisé seulement par [move] et [kill_and_clean] *)
+let _kill (id : int) : unit = dead_ids := IntSet.add id !dead_ids
 
 (** On construit une fonction de comparaison entre les differentes creatures
     pour savoir qui sachant qu'on peux ecraser les creatures plus faibles que
@@ -43,6 +44,11 @@ let toughness_dict : (creature, creature list) Hashtbl.t =
   end;
   dict
 
+let kill_and_clean pos =
+  let id = get_id pos in
+  _kill id;
+  set pos (Empty, invalid_id)
+
 (** [can_stomp crea1 crea2] renvoie [true] si crea1 peut écraser crea2. Sinon,
     renvoie [false]. *)
 
@@ -67,7 +73,7 @@ let move (old_position : int * int) (new_position : int * int) : int * int =
       new_position
   | reached_creature when can_stomp crea reached_creature ->
       let id_tue = get_id new_position in
-      kill id_tue;
+      _kill id_tue;
       let character = get old_position in
       set old_position (Empty, invalid_id);
       set new_position character;

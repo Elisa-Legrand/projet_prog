@@ -94,3 +94,8 @@ and move_elephant_charge (elephant_pos : int * int) (direction : dir) :
           let new_pos = move_dir elephant_pos direction in
           render ();
           (new_pos, false))
+
+let spawn_elephant pos =
+  let id = prochain_id () in
+  set pos (Elephant, id);
+  Queue.add (fun () -> player (fun () -> elephant pos Calm id)) queue

@@ -13,16 +13,24 @@ une case adjacente si possible, ou disparaître, ou rien faire). Si [lifetime]
 est un multiple de [spider_egg_cooldown], une araignée apparaît si possible à
 côté. Si [lifetime = spider_egg_lifetime], le sac d'oeufs disparaît. *)
 let rec spider_egg (current_position : int * int) (lifetime : int) id : unit =
-  try
+  let x, y = current_position in
+  Printf.eprintf
+    "[SPIDER_EGG] I am a spider_egg with id %d in position (%d, %d) and \
+     lifetime %d\n"
+    id x y lifetime;
+  begin try
     if lifetime mod spider_egg_cooldown = 0 then
       let pos_baby = get_random_empty_adjacent_cell current_position in
       spawn_spider pos_baby
-  with No_adjacent_space ->
-    ();
-    if lifetime >= spider_egg_lifetime then kill id;
-    if safe_perform id then spider_egg current_position (lifetime + 1) id
+  with No_adjacent_space -> ()
+  end;
+  if lifetime >= spider_egg_lifetime then kill_and_clean current_position
+  else if safe_perform id then spider_egg current_position (lifetime + 1) id
 
 and spider (current_position : int * int) id : unit =
+  let x, y = current_position in
+  Printf.eprintf "[SPIDER] I am a spider with id %d in position (%d, %d)\n" id x
+    y;
   let (new_position : int * int) = move_dir current_position (random_dir ()) in
   let spawn_egg_bool = Random.int 100 = 0 in
   (if spawn_egg_bool then

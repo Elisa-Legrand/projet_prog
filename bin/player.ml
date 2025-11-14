@@ -4,6 +4,7 @@ open Utils
 open Effect
 open Effect.Deep
 open Engine
+open World
 
 let number_of_turn_played = ref 0
 
@@ -45,3 +46,8 @@ let rec camel (current_position : int * int) (id : int) : unit =
   render ();
   if safe_perform id then camel new_position id
   else end_of_game !number_of_turn_played
+
+let spawn_camel pos =
+  let id = prochain_id () in
+  set pos (Camel, id);
+  Queue.add (fun () -> player (fun () -> camel pos id)) queue
