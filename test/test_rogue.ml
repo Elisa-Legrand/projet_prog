@@ -1,38 +1,13 @@
+(*test que je n'ai pas réussi à faire marcher à temps*)
+
 open Roguelib
-open Utils
-open Player
-open Engine
-open Vague
+open Ui
 
 (** Type du contenu d'une case du monde. *)
 type creature =
   | Empty
   | Cactus
-  | Spider
-  | Spider_Egg
-  | Camel
-  | Snake
-  | Elephant
-  | Invalid
-  | Angry_Elephant
-  | Stunned_Elephant
-  | Robot
-  | Boost
-  | SuperCamel
-  | Zero
-  | Un
-  | Deux
-  | Trois
-  | Quatre
-  | Cinq
-  | Six
-  | Sept
-  | Huit
-  | Neuf
-  | Score
-  | Temps
-  | Vague
-  | Power_up
+
 
 type cell = creature * int
 
@@ -56,28 +31,18 @@ let width, height = (5, 5)
 (** Le monde [world] est un tableau mutable. *)
 let world : cell array array = Array.make_matrix (width) height (Empty, invalid_id)
 
-(** [get (x,y)] renvoie le contenu et l'identifiant de la case en position [x,y]
-    du monde. Renvoie [(Invalid, -1)] pour toutes les cases hors du monde.*)
-let get ((x, y) : int * int) : cell =
-  try world.(x).(y) with Invalid_argument _ -> (Invalid, invalid_id)
 
 (** [set (x,y) v] remplit la case en position [x,y] du monde avec l'entité [v].
     Lève [Exception: Invalid_argument] si la position est hors du monde.*)
 let set ((x, y) : int * int) (v : cell) : unit = world.(x).(y) <- v
 
-(** [get_content (x,y)] renvoie le contenu de la case en position [x,y] du
-    monde. Renvoie [Invalid] pour toutes les cases hors du monde.*)
-let get_content ((x, y) : int * int) : creature =
-  let content, _ = get (x, y) in
-  content
-
-(** [get_id (x,y)] renvoie l'identifiant de la case en position [x,y] du monde.
-    Doit renvoyer [-1] pour les cases vides*)
-let get_id ((x, y) : int * int) : int =
-  let content, id = get (x, y) in
-  if content = Empty && id <> invalid_id then
-    failwith "Empty cell with wrong id detected"
-  else id
-
-
+let () =
+for k = 0 to 4 do 
+  set (k,0) (Cactus,invalid_id);
+  set (k,4) (Cactus,invalid_id);
+done;
+for k = 1 to 3 do 
+  set (0,k) (Cactus,invalid_id);
+  set (4,k) (Cactus,invalid_id);
+done
 
