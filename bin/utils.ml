@@ -143,7 +143,7 @@ let is_empty (position : int * int) : bool = get position = (Empty, invalid_id)
 (*renvoie la liste des cases adjacentes (si en bord de plateau n'en renvoie pas 4)*)
 let get_adjacent_cells ((x, y) : int * int) : (int * int) list =
   List.filter
-    (fun (x, y) -> 0 <= x && x < height && 0 <= y && y < width)
+    (fun (x, y) -> 0 <= x && x < width && 0 <= y && y < height)
     [ (x + 1, y); (x, y + 1); (x - 1, y); (x, y - 1) ]
 
 (** [get_random_empty_adjacent_cell position] renvoie une case adjacente
