@@ -14,9 +14,10 @@ let () = Random.self_init ()
 let ( ++ ) ((x, y) : int * int) ((dx, dy) : int * int) : int * int =
   (x + dx, y + dy)
 
-(** [kill id] tue le processus de l'objet d'identifiant [id]. Entre autres, la
-    fonction place [id] dans [dead_set]. *)
-let kill (id : int) : unit = dead_ids := IntSet.add id !dead_ids
+(** [_kill id] tue le processus de l'objet d'identifiant [id]. Entre autres, la
+    fonction place [id] dans [dead_set]. Ne CLEAN pas le sprite. Doit être
+    utilisé seulement par [move] et [kill_and_clean] *)
+let _kill (id : int) : unit = dead_ids := IntSet.add id !dead_ids
 
 (** On construit une fonction de comparaison entre les differentes creatures
     pour savoir qui sachant qu'on peux ecraser les creatures plus faibles que
@@ -43,6 +44,11 @@ let toughness_dict : (creature, creature list) Hashtbl.t =
   end;
   dict
 
+let kill_and_clean pos =
+  let id = get_id pos in
+  _kill id;
+  set pos (Empty, invalid_id)
+
 (** [can_stomp crea1 crea2] renvoie [true] si crea1 peut écraser crea2. Sinon,
     renvoie [false]. *)
 
@@ -67,7 +73,7 @@ let move (old_position : int * int) (new_position : int * int) : int * int =
       new_position
   | reached_creature when can_stomp crea reached_creature ->
       let id_tue = get_id new_position in
-      kill id_tue;
+      _kill id_tue;
       let character = get old_position in
       set old_position (Empty, invalid_id);
       set new_position character;
@@ -129,12 +135,13 @@ let get_adjacent_cells ((x, y) : int * int) : (int * int) list =
     aléatoire vide à côté si elle existe. Sinon elle lève l'exception
     [No_adjacent_space].*)
 let get_random_empty_adjacent_cell (position : int * int) : int * int =
-  let adjacent_cells = Array.of_list (get_adjacent_cells position) in
-  let len = Array.length adjacent_cells in
+  let empty_cells = List.filter (fun cell -> get_content cell = Empty) (get_adjacent_cells position) in
+  let adjacent_empty_cells = Array.of_list empty_cells in
+  let len = Array.length adjacent_empty_cells in
   if len = 0 then raise No_adjacent_space
   else
     let idx = Random.int len in
-    adjacent_cells.(idx)
+    adjacent_empty_cells.(idx)
 
 let get_walkable_adjacent_cells (crea : creature) ((x, y) : int * int) :
     (int * int) list =

@@ -31,6 +31,9 @@ let rec spider_egg (current_position : int * int) (lifetime : int) id : unit =
     
 
 and spider (current_position : int * int) id : unit =
+  let x, y = current_position in
+  (* Printf.eprintf "[SPIDER] I am a spider with id %d in position (%d, %d)\n" id x
+    y; *)
   let (new_position : int * int) = move_dir current_position (random_dir ()) in
   let spawn_egg_bool = Random.int 100 = 0 in
   (if spawn_egg_bool then
