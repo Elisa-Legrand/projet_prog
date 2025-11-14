@@ -248,9 +248,22 @@ let chiffre_to_creature (i:int) =
   let update (i:int) (pos :int) :unit=
   let dizaine = i/10 in
   let unite = i mod 10 in
-  set (width+1,pos) ((chiffre_to_creature dizaine),invalid_id);
-  set (width+2,pos) ((chiffre_to_creature unite),invalid_id)
+  set (width+2,pos) ((chiffre_to_creature dizaine),invalid_id);
+  set (width+3,pos) ((chiffre_to_creature unite),invalid_id)
 
-  let update_temps (i:int):unit= update i 1
-  let update_vague (i:int):unit = update i 3
-  let update_power_up (i:int):unit = update i 5
+  let update_temps (i:int):unit= update i 0
+  let update_vague (i:int):unit = update i 2
+  let update_power_up (i:int):unit = update i 4
+  let update_score (i:int):unit = 
+  let centaine = i/100 in
+  let dizaine = (i/10) mod 10 in
+  let unite = i mod 10 in
+  set (width+2,6) ((chiffre_to_creature centaine),invalid_id);
+  set (width+3,6) ((chiffre_to_creature dizaine),invalid_id);
+  set (width+4,6) ((chiffre_to_creature unite),invalid_id)
+
+  let init_nom_var():unit =
+    set (width +1 , 0) (Temps,invalid_id);
+    set (width +1 , 2) (Vague,invalid_id);
+    set (width +1 , 4) (Power_up,invalid_id);
+    set (width +1 , 6) (Score,invalid_id)

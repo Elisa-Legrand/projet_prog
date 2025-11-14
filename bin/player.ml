@@ -49,6 +49,7 @@ let power_up = ref 0
 let rec camel (current_position : int * int) (id : int) : unit =
 
   number_of_turn_played := !number_of_turn_played + 1;
+  update_score !number_of_turn_played;
   let dir1 = keyboard_direction() in
     if (get_content (current_position ++ dir_to_couple(dir1))) = Boost then begin
       set current_position (SuperCamel,id); 

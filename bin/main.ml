@@ -35,6 +35,7 @@ let () = spawn_spider (random_position ())
 let () = spawn_snake (random_position ())
 let () = spawn_elephant (random_position ())
 let () = spawn_camel (random_position ())
+let () = init_nom_var()
 
 (*let () = spawn_robot (random_position ())*)
 (* Début du jeu *)

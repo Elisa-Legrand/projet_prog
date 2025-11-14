@@ -23,6 +23,10 @@ type creature =
   | Sept
   | Huit
   | Neuf
+  | Score
+  | Temps
+  | Vague
+  | Power_up
 
 type cell = creature * int
 
@@ -44,7 +48,7 @@ let width, height = (50, 30)
 *)
 
 (** Le monde [world] est un tableau mutable. *)
-let world : cell array array = Array.make_matrix (width+4) height (Empty, invalid_id)
+let world : cell array array = Array.make_matrix (width+5) height (Empty, invalid_id)
 
 (** [get (x,y)] renvoie le contenu et l'identifiant de la case en position [x,y]
     du monde. Renvoie [(Invalid, -1)] pour toutes les cases hors du monde.*)
