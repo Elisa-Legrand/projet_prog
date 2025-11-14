@@ -10,6 +10,9 @@ exception No_path_found
 (** Déplacement d'une entité *)
 let () = Random.self_init ()
 
+
+
+
 (** Opérateur somme pour les paires d'entiers*)
 let ( ++ ) ((x, y) : int * int) ((dx, dy) : int * int) : int * int =
   (x + dx, y + dy)
@@ -228,3 +231,24 @@ let a_star_get_next_cell crea src dest =
   | _::b::_ -> b
   | exception No_path_found -> raise No_path_found
 
+let chiffre_to_creature (i:int) =
+  match i with
+  |0-> Zero
+  |1-> Un
+  |2-> Deux
+  |3-> Trois
+  |4-> Quatre
+  |5-> Cinq
+  |6-> Six
+  |7-> Sept
+  |8-> Huit
+  |9-> Neuf
+  |_->failwith "pas un chiffre"
+  let update (i:int) (pos :int) :unit=
+  let dizaine = i/10 in
+  let unite = i mod 10 in
+  set (width+1,pos) ((chiffre_to_creature dizaine),invalid_id);
+  set (width+2,pos) ((chiffre_to_creature unite),invalid_id)
+
+  let update_temps (i:int):unit= update i 1
+  let update_vague (i:int):unit =update i 3

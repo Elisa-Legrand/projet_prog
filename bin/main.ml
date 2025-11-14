@@ -7,6 +7,7 @@ open Snake
 open Elephant
 open Spider
 open Robot
+open Vague
 
 (* Initialisation du monde *)
 
@@ -15,8 +16,7 @@ let () = Random.self_init ()
 
 (** [random_position ()] renvoie une position aléatoire dans le monde*)
 let random_position () : int * int = (Random.int width, Random.int height)
-
-let number_of_cacti = 200
+let number_of_cacti = 50
 
 (* Place les cactus initialement. *)
 
@@ -25,12 +25,18 @@ let () =
     set (random_position ()) (Cactus, invalid_id)
   done
 
+let () =
+for k = 0 to (height-1) do 
+  spawn_pos Cactus (width, k)
+done
+
+let ()= Queue.add(fun ()-> player (fun ()->systeme_vague())) queue
 let () = spawn_spider (random_position ())
 let () = spawn_snake (random_position ())
 let () = spawn_elephant (random_position ())
-let () = spawn_robot (random_position ())
 let () = spawn_camel (random_position ())
 
+(*let () = spawn_robot (random_position ())*)
 (* Début du jeu *)
 let () = run_queue ()
 

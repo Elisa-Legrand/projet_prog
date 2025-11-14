@@ -1,4 +1,4 @@
-open Utils
+(**open Utils
 open Engine
 open World
 let rec robot current_position id =
@@ -15,4 +15,4 @@ let rec robot current_position id =
 let spawn_robot pos =
   let id = prochain_id () in
   set pos (Robot, id);
-  Queue.add (fun () -> player (fun () -> robot pos id)) queue
+  Queue.add (fun () -> player (fun () -> robot pos id)) queue*)

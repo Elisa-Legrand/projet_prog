@@ -89,7 +89,6 @@ and move_elephant_charge (elephant_pos : int * int) (direction : dir) :
       | Cactus | Invalid -> (elephant_pos, true)
       | _ ->
           let new_pos = move_dir elephant_pos direction in
-          render ();
           (new_pos, false))
 
 let spawn_elephant pos =

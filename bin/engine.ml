@@ -44,7 +44,6 @@ let player (character : unit -> unit): unit =
     (le type de retour 'a s'explique par le fait que la fonction n'est pas censée terminer)*)
 let run_queue () : 'a =
   while true do
-    render () ;
     let suspended_character = Queue.pop queue in
     suspended_character () ;
   done

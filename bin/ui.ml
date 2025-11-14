@@ -14,6 +14,16 @@ let string_of_cell : cell -> string = function
   | Angry_Elephant, _ -> "\u{1F621}"
   | Stunned_Elephant, _ -> "\u{1F635}"
   | Robot, _ -> "\u{1F916}"
+  | Zero,_ -> "\u{0030}\u{FE0F}\u{20E3}" 
+  | Un,_ -> "\u{0031}\u{FE0F}\u{20E3}" 
+  | Deux,_ -> "\u{0032}\u{FE0F}\u{20E3}" 
+  | Trois,_ -> "\u{0033}\u{FE0F}\u{20E3}" 
+  | Quatre,_ -> "\u{0034}\u{FE0F}\u{20E3}" 
+  | Cinq,_ -> "\u{0035}\u{FE0F}\u{20E3}"  
+  | Six,_ -> "\u{0036}\u{FE0F}\u{20E3}" 
+  | Sept,_ -> "\u{0037}\u{FE0F}\u{20E3}"  
+  | Huit,_ -> "\u{0038}\u{FE0F}\u{20E3}"  
+  | Neuf,_ -> "\u{0039}\u{FE0F}\u{20E3}"  
 
 (* Codes des emojis pour les animaux pertinents
    serpent : "\u{1F40D}"
