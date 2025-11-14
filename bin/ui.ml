@@ -13,6 +13,7 @@ let string_of_cell : cell -> string = function
   | Invalid, _ -> failwith "Invalid cell detected"
   | Angry_Elephant, _ -> "\u{1F621}"
   | Stunned_Elephant, _ -> "\u{1F635}"
+  | Robot, _ -> "\u{1F916}"
 
 (* Codes des emojis pour les animaux pertinents
    serpent : "\u{1F40D}"

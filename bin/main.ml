@@ -6,6 +6,7 @@ open Engine
 open Snake
 open Elephant
 open Spider
+open Robot
 
 (* Initialisation du monde *)
 
@@ -27,6 +28,7 @@ let () =
 let () = spawn_spider (random_position ())
 let () = spawn_snake (random_position ())
 let () = spawn_elephant (random_position ())
+let () = spawn_robot (random_position ())
 let () = spawn_camel (random_position ())
 
 (* Début du jeu *)

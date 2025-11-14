@@ -14,7 +14,8 @@ type _ Effect.t += End_of_turn: unit t
    correspondant à son prochain tour. *)
 let queue : (unit -> unit) Queue.t = Queue.create ()
 
-let camel_pos = ref (-1, -1)
+let camel_pos = ref (-1, -1) (* sera mis à jour dans spawn_camel *)
+let camel_is_alive = ref false  (* sera mis true dans spawn_camel *)
 
 (** Set des identifiants des créatures mortes. *)
 let dead_ids = ref IntSet.empty
