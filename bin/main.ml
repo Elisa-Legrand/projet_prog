@@ -32,4 +32,6 @@ let () = spawn_camel (random_position ())
 (* Début du jeu *)
 let () = run_queue ()
 
+
+
 (*Fin du jeu*)
