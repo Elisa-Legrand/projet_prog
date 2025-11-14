@@ -1,7 +1,6 @@
 (*test que je n'ai pas réussi à faire marcher à temps*)
 
-open Roguelib
-open Ui
+
 
 (** Type du contenu d'une case du monde. *)
 type creature =

@@ -18,7 +18,7 @@ let () = Random.self_init ()
 
 (** [random_position ()] renvoie une position aléatoire dans le monde*)
 let random_position () : int * int = (Random.int width, Random.int height)
-let number_of_cacti = 500
+let number_of_cacti = 200
 
 (* Place les cactus initialement. *)
 let () =
