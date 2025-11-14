@@ -29,7 +29,7 @@ let string_of_cell : cell -> string = function
   | Score,_ -> "Score:"
   | Temps,_ -> "Temps avant prochaine vague:"
   | Vague,_ -> "Vague:"
-  | Power_up,_ -> "Temp restant de power_up:"
+  | Power_up,_ -> "Temps restant de power_up:"
 
 (* Codes des emojis pour les animaux pertinents
    serpent : "\u{1F40D}"

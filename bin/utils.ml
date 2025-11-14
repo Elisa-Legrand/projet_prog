@@ -172,7 +172,7 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
   Hashtbl.add parent src src;
 
   let manhattan_distance ((x1, y1) : int * int) ((x2, y2) : int * int) : int =
-    abs (x1 - y1) + abs (x2 - y2)
+    abs (x1 - x2) + abs (y1 - y2)
   in
 
   let get_dist_from_src ((x, y) : int * int) : int =
@@ -213,10 +213,10 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
   in
   let reconstruct_path () = List.rev (_aux_reconstruct_path dest) in
 
-  pqueue_add pq (get_dist_from_src src) src;
+  pqueue_add pq (priority src) src;
 
   let found_dest = ref false in
-  while (not (pqueue_is_empty pq)) || not !found_dest do
+  while (not (pqueue_is_empty pq)) && not !found_dest do
     let current_cell = pqueue_pop pq in
     if current_cell <> dest then
       let neighbors = get_walkable_adjacent_cells crea current_cell in

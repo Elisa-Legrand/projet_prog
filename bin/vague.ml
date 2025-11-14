@@ -21,9 +21,9 @@ let spawn_pos (truc:creature) (pos : int*int) :unit=
     |Elephant -> spawn_elephant pos
     |Snake -> spawn_snake pos
     |Empty|Invalid|Angry_Elephant|Stunned_Elephant->()
-    |Robot -> ()
+    |Robot -> spawn_robot pos
     |chose -> set pos (chose,invalid_id)
-    (*spawn_robot pos*)
+    (**)
 
 let spawn (truc:creature):unit =
     let pos = ref (random_position()) in
