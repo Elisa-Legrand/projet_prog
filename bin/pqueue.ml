@@ -7,7 +7,6 @@ let pqueue_create () = { size = 0; l = [] }
 let pqueue_is_empty pq = pq.size = 0
 let pqueue_mem pq elt = List.exists (fun (_, e) -> e = elt) pq.l
 
-
 let _pqueue_update_priority pq prio elt =
   let rec explore l =
     match l with

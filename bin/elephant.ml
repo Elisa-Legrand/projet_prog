@@ -17,18 +17,15 @@ let dist (x : int) (y : int) : int = if x > y then x - y else y - x
 
 (*renvoie vrai si il y'a un cactus entre x,y1 et x,y2 si xco1 
                                           y1,x et y2,x sinon*)
-let cactus_entre (x_co1:bool) (x:int) (y1:int) (y2:int) :bool=
-    let b =ref false in
-    let start = ref 0 in
-    (if y1>y2 then 
-      start := y2
-    else
-      start := y1);
-    for k = !start to !start +(dist y1 y2) do
-        let (crea,_)= if x_co1 then get (x, k) else get (k,x) in
-        b:=!b || crea = Cactus
-    done;
-    !b
+let cactus_entre (x_co1 : bool) (x : int) (y1 : int) (y2 : int) : bool =
+  let b = ref false in
+  let start = ref 0 in
+  if y1 > y2 then start := y2 else start := y1;
+  for k = !start to !start + dist y1 y2 do
+    let crea, _ = if x_co1 then get (x, k) else get (k, x) in
+    b := !b || crea = Cactus
+  done;
+  !b
 
 (*Détecte si le chameau est vu par l'éléphant, c'est à dire si ils sont sur la même ligne ou la même colonne;
 à moins de 10 cases l'un de l'autre et qu'il n'y a pas de cactus entre eux .
@@ -36,8 +33,12 @@ renvoie Some 'la direction vers laquelle l'elephant devrait courir si le chameau
 et None sinon*)
 let straight_line_to_camel elephant_pos =
   match (!camel_pos, elephant_pos) with
-  | (x1, y1), (x2, y2) when x1 = x2 && (dist y1 y2) <=10 && not(cactus_entre true x1 y1 y2)-> if y1 < y2 then Some Up else Some Down
-  | (x1, y1), (x2, y2) when y1 = y2 && (dist x1 x2) <=10 && not(cactus_entre false y1 x1 x2)-> if x1 < x2 then Some Left else Some Right
+  | (x1, y1), (x2, y2)
+    when x1 = x2 && dist y1 y2 <= 10 && not (cactus_entre true x1 y1 y2) ->
+      if y1 < y2 then Some Up else Some Down
+  | (x1, y1), (x2, y2)
+    when y1 = y2 && dist x1 x2 <= 10 && not (cactus_entre false y1 x1 x2) ->
+      if x1 < x2 then Some Left else Some Right
   | _ -> None
 
 (*defini ce que l'elephant fera en fonction de son etat*)
@@ -91,7 +92,6 @@ and move_elephant_charge (elephant_pos : int * int) (direction : dir) :
       | _ ->
           let new_pos = move_dir elephant_pos direction in
           (new_pos, false))
-
 
 let spawn_elephant pos =
   let id = prochain_id () in

@@ -18,17 +18,18 @@ let rec spider_egg (current_position : int * int) (lifetime : int) id : unit =
       let pos_baby = get_random_empty_adjacent_cell current_position in
       spawn_spider pos_baby
     end
-  else ();
-    if lifetime >= spider_egg_lifetime then begin _kill id;
-                                      set current_position (Empty,invalid_id)
-                                      end;
-    if safe_perform id then spider_egg current_position (lifetime+1) id
-  with |No_adjacent_space ->
-    if lifetime >= spider_egg_lifetime then begin _kill id;
-                                        set current_position (Empty,invalid_id);
-                                        end;
-    if safe_perform id then spider_egg current_position (lifetime) id
-    
+    else ();
+    if lifetime >= spider_egg_lifetime then begin
+      _kill id;
+      set current_position (Empty, invalid_id)
+    end;
+    if safe_perform id then spider_egg current_position (lifetime + 1) id
+  with No_adjacent_space ->
+    if lifetime >= spider_egg_lifetime then begin
+      _kill id;
+      set current_position (Empty, invalid_id)
+    end;
+    if safe_perform id then spider_egg current_position lifetime id
 
 and spider (current_position : int * int) id : unit =
   let (new_position : int * int) = move_dir current_position (random_dir ()) in

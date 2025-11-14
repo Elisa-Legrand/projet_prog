@@ -10,9 +10,6 @@ exception No_path_found
 (** Déplacement d'une entité *)
 let () = Random.self_init ()
 
-
-
-
 (** Opérateur somme pour les paires d'entiers*)
 let ( ++ ) ((x, y) : int * int) ((dx, dy) : int * int) : int * int =
   (x + dx, y + dy)
@@ -37,15 +34,26 @@ let toughness_dict : (creature, creature list) Hashtbl.t =
     (* Invalid est le type des murs extérieurs *)
     Hashtbl.add dict Cactus [];
     Hashtbl.add dict Elephant [ Snake; Spider; Camel; Spider_Egg ];
-    Hashtbl.add dict Angry_Elephant [ Snake; Spider; Camel; Spider_Egg ; Robot];
+    Hashtbl.add dict Angry_Elephant [ Snake; Spider; Camel; Spider_Egg; Robot ];
     Hashtbl.add dict Stunned_Elephant [];
-    Hashtbl.add dict Snake [ Spider; Spider_Egg;Camel ];
+    Hashtbl.add dict Snake [ Spider; Spider_Egg; Camel ];
     Hashtbl.add dict Spider [ Camel ];
-    Hashtbl.add dict Camel [Stunned_Elephant; Spider_Egg;Boost ];
-    Hashtbl.add dict Robot [ Snake; Stunned_Elephant; Spider_Egg; Elephant; Spider; Camel];
+    Hashtbl.add dict Camel [ Stunned_Elephant; Spider_Egg; Boost ];
+    Hashtbl.add dict Robot
+      [ Snake; Stunned_Elephant; Spider_Egg; Elephant; Spider; Camel ];
     Hashtbl.add dict Spider_Egg [];
     Hashtbl.add dict Empty [];
-    Hashtbl.add dict SuperCamel [Spider;Spider_Egg;Snake;Elephant;Angry_Elephant;Stunned_Elephant;Robot;Boost]
+    Hashtbl.add dict SuperCamel
+      [
+        Spider;
+        Spider_Egg;
+        Snake;
+        Elephant;
+        Angry_Elephant;
+        Stunned_Elephant;
+        Robot;
+        Boost;
+      ]
   end;
   dict
 
@@ -129,7 +137,6 @@ let prochain_id () : int =
   incr _id;
   !_id
 
-
 let id_courant () : int = !_id
 let is_empty (position : int * int) : bool = get position = (Empty, invalid_id)
 
@@ -143,7 +150,11 @@ let get_adjacent_cells ((x, y) : int * int) : (int * int) list =
     aléatoire vide à côté si elle existe. Sinon elle lève l'exception
     [No_adjacent_space].*)
 let get_random_empty_adjacent_cell (position : int * int) : int * int =
-  let empty_cells = List.filter (fun cell -> get_content cell = Empty) (get_adjacent_cells position) in
+  let empty_cells =
+    List.filter
+      (fun cell -> get_content cell = Empty)
+      (get_adjacent_cells position)
+  in
   let adjacent_empty_cells = Array.of_list empty_cells in
   let len = Array.length adjacent_empty_cells in
   if len = 0 then raise No_adjacent_space
@@ -230,48 +241,48 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
   if !found_dest then reconstruct_path () else raise No_path_found
 
 let a_star_get_next_cell crea src dest =
-  match a_star crea src dest with 
+  match a_star crea src dest with
   | [] -> failwith "Empty path"
-  | [_] -> failwith "Already on destination"
-  | _::b::_ -> b
+  | [ _ ] -> failwith "Already on destination"
+  | _ :: b :: _ -> b
   | exception No_path_found -> raise No_path_found
 
-
 (*fonction utilise dans l'affichage du score, vu comme des creatures à droite de la ligne de cactus*)
-let chiffre_to_creature (i:int) =
+let chiffre_to_creature (i : int) =
   match i with
-  |0-> Zero
-  |1-> Un
-  |2-> Deux
-  |3-> Trois
-  |4-> Quatre
-  |5-> Cinq
-  |6-> Six
-  |7-> Sept
-  |8-> Huit
-  |9-> Neuf
-  |_->failwith "pas un chiffre"
+  | 0 -> Zero
+  | 1 -> Un
+  | 2 -> Deux
+  | 3 -> Trois
+  | 4 -> Quatre
+  | 5 -> Cinq
+  | 6 -> Six
+  | 7 -> Sept
+  | 8 -> Huit
+  | 9 -> Neuf
+  | _ -> failwith "pas un chiffre"
 
-  (*fonction d'affichage des variables.*)
-  let update (i:int) (pos :int) :unit=
-  let dizaine = i/10 in
+(*fonction d'affichage des variables.*)
+let update (i : int) (pos : int) : unit =
+  let dizaine = i / 10 in
   let unite = i mod 10 in
-  set (width+2,pos) ((chiffre_to_creature dizaine),invalid_id);
-  set (width+3,pos) ((chiffre_to_creature unite),invalid_id)
+  set (width + 2, pos) (chiffre_to_creature dizaine, invalid_id);
+  set (width + 3, pos) (chiffre_to_creature unite, invalid_id)
 
-  let update_temps (i:int):unit= update i 0
-  let update_vague (i:int):unit = update i 2
-  let update_power_up (i:int):unit = update i 4
-  let update_score (i:int):unit = 
-  let centaine = i/100 in
-  let dizaine = (i/10) mod 10 in
+let update_temps (i : int) : unit = update i 0
+let update_vague (i : int) : unit = update i 2
+let update_power_up (i : int) : unit = update i 4
+
+let update_score (i : int) : unit =
+  let centaine = i / 100 in
+  let dizaine = i / 10 mod 10 in
   let unite = i mod 10 in
-  set (width+2,6) ((chiffre_to_creature centaine),invalid_id);
-  set (width+3,6) ((chiffre_to_creature dizaine),invalid_id);
-  set (width+4,6) ((chiffre_to_creature unite),invalid_id)
+  set (width + 2, 6) (chiffre_to_creature centaine, invalid_id);
+  set (width + 3, 6) (chiffre_to_creature dizaine, invalid_id);
+  set (width + 4, 6) (chiffre_to_creature unite, invalid_id)
 
-  let init_nom_var():unit =
-    set (width +1 , 0) (Temps,invalid_id);
-    set (width +1 , 2) (Vague,invalid_id);
-    set (width +1 , 4) (Power_up,invalid_id);
-    set (width +1 , 6) (Score,invalid_id)
+let init_nom_var () : unit =
+  set (width + 1, 0) (Temps, invalid_id);
+  set (width + 1, 2) (Vague, invalid_id);
+  set (width + 1, 4) (Power_up, invalid_id);
+  set (width + 1, 6) (Score, invalid_id)
