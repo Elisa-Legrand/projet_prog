@@ -17,28 +17,28 @@ let dist (x: int) (y:int):int =
     if x>y then x-y
     else y-x
 
-let is cactus_entre (x_co1:bool) (x:int) (y1:int) (y2:int) :bool=
+(**renvoie vrai si il y'a un cactus entre x,y1 et x,y2 si xco1 
+                                          y1,x et y2,x sinon*)
+let cactus_entre (x_co1:bool) (x:int) (y1:int) (y2:int) :bool=
     let b =ref false in
-    let c = ref (Empty,0) in
-    for k = y1 to y2 do
-        if x_co1 then c := get (x, k) in 
-        else let c := get (k,x) in 
+    let start = ref 0 in
+    (if y1>y2 then 
+      start := y2
+    else
+      start := y1);
+    for k = !start to !start +(dist y1 y2) do
+        let (crea,_)= if x_co1 then get (x, k) else get (k,x) in
         b:=!b || crea = Cactus
     done;
     !b
-        
-let is_cactus_entre (pos1: int*int) (pos2 :int*int) (dir: int*int):bool =
-    match (dir,pos1,pos2) with
-    |(0,_)
-    |(_,0)->
 
 (*detects whether the camel and elephant are on the same line or column,
 returns Some 'the direction the elephant should run toward' if the Camel is in sight,
 and None if it's not*)
 let straight_line_to_camel elephant_pos =
   match (!camel_pos, elephant_pos) with
-  | (x1, y1), (x2, y2) when x1 = x2 && (dist y1 y2) <=10-> if y1 < y2 then Some Up else Some Down
-  | (x1, y1), (x2, y2) when y1 = y2 && (dist x1 x2) <=10-> if x1 < x2 then Some Left else Some Right
+  | (x1, y1), (x2, y2) when x1 = x2 && (dist y1 y2) <=10 && not(cactus_entre true x1 y1 y2)-> if y1 < y2 then Some Up else Some Down
+  | (x1, y1), (x2, y2) when y1 = y2 && (dist x1 x2) <=10 && not(cactus_entre false y1 x1 x2)-> if x1 < x2 then Some Left else Some Right
   | _ -> None
 
 (*defines what the elephant will do depending on its state*)

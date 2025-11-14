@@ -18,7 +18,7 @@ let rec spider_egg (current_position : int * int) (lifetime : int) id : unit =
         let pos_baby = get_random_empty_adjacent_cell current_position in
     (set pos_baby (Spider, prochain_id ()) ;
     Queue.add
-      (fun () -> player (fun () -> spider pos_baby (id_courant ())))
+      (fun () -> player (fun () -> spider pos_baby (id)))
       queue)
     )
   with
@@ -36,7 +36,7 @@ and spider (current_position : int * int) id : unit =
       let pos_egg = get_random_empty_adjacent_cell current_position in
       set pos_egg (Spider_Egg, prochain_id ()) ;
       Queue.add
-        (fun () -> player (fun () -> spider_egg pos_egg 1 (id_courant ())))
+        (fun () -> player (fun () -> spider_egg pos_egg 1 (id)))
         queue
     with 
     | No_adjacent_space -> () ;
