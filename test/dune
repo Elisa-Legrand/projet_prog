@@ -1,3 +1,7 @@
 (test
  (name test_rogue)
  (libraries roguelib))
+
+(test
+ (name test_pqueue)
+ (libraries roguelib))

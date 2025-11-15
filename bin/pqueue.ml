@@ -19,8 +19,10 @@ let _pqueue_update_priority pq prio elt =
 let pqueue_add pq prio elt =
   if pqueue_mem pq elt then (* update priority *)
     _pqueue_update_priority pq prio elt
-  else pq.size <- pq.size + 1;
-  pq.l <- (prio, elt) :: pq.l
+  else begin 
+    pq.size <- pq.size + 1;
+    pq.l <- (prio, elt) :: pq.l
+  end
 
 (** [_pqueue_list_find_min l] donne le couple de priorité minimale le plus à
     gauche dans [l] *)

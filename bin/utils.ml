@@ -183,6 +183,7 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
   let pq = pqueue_create () in
   let dist_from_src = Hashtbl.create (width * height) in
   let parent = Hashtbl.create (width * height) in
+  let explored = Hashtbl.create (width * height) in
   Hashtbl.add dist_from_src src 0;
   Hashtbl.add parent src src;
 
@@ -197,7 +198,7 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
   in
 
   let is_explored ((x, y) : int * int) : bool =
-    get_dist_from_src (x, y) <> max_int
+    Hashtbl.mem explored (x, y)
   in
 
   let priority ((x, y) : int * int) : int =
@@ -208,16 +209,15 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
     match neighbors with
     | [] -> ()
     | neighbor :: q ->
-        if not (is_explored neighbor) then (
-          let d_no_deviation = get_dist_from_src neighbor in
-          let d_deviation = 1 + get_dist_from_src curr in
-          (* la distance entre curr et neighbor est 1, ils sont côtes à côtes... *)
-          if d_deviation < d_no_deviation then begin
-            Hashtbl.replace dist_from_src neighbor d_deviation;
-            Hashtbl.replace parent neighbor curr
-          end;
-          pqueue_add pq (priority neighbor) neighbor;
-          treat_neighbors curr q)
+        let d_no_deviation = get_dist_from_src neighbor in
+        let d_deviation = 1 + get_dist_from_src curr in
+        (* la distance entre curr et neighbor est 1, ils sont côtes à côtes... *)
+        if d_deviation < d_no_deviation then begin
+          Hashtbl.replace dist_from_src neighbor d_deviation;
+          Hashtbl.replace parent neighbor curr
+        end;
+        pqueue_add pq (priority neighbor) neighbor;
+        treat_neighbors curr q
     (* la priorité est mise à jour si neighbor est déjà dedans *)
   in
 
@@ -233,10 +233,13 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
   let found_dest = ref false in
   while (not (pqueue_is_empty pq)) && not !found_dest do
     let current_cell = pqueue_pop pq in
+    if not (is_explored current_cell) then begin
+    Hashtbl.add explored current_cell true;
     if current_cell <> dest then
       let neighbors = get_walkable_adjacent_cells crea current_cell in
       treat_neighbors current_cell neighbors
     else found_dest := true
+  end
   done;
   if !found_dest then reconstruct_path () else raise No_path_found
 
