@@ -7,11 +7,11 @@ open World
 let spider_egg_cooldown = 20 (* en nombre de tours *)
 let spider_egg_lifetime = 60
 
-(* [spider_egg current_position cooldown lifetime] effectue tous les
-prochains tours du sac d'oeufs depuis [current_pos] (poser une araignée sur
-une case adjacente si possible, ou disparaître, ou rien faire). Si [lifetime]
-est un multiple de [spider_egg_cooldown], une araignée apparaît si possible à
-côté. Si [lifetime = spider_egg_lifetime], le sac d'oeufs disparaît. *)
+(** [spider_egg current_position cooldown lifetime] effectue tous les prochains
+    tours du sac d'oeufs depuis [current_pos] (poser une araignée sur une case
+    adjacente si possible, ou disparaître, ou rien faire). Si [lifetime] est un
+    multiple de [spider_egg_cooldown], une araignée apparaît si possible à côté.
+    Si [lifetime = spider_egg_lifetime], le sac d'oeufs disparaît. *)
 let rec spider_egg (current_position : int * int) (lifetime : int) id : unit =
   try
     if lifetime mod spider_egg_cooldown = 0 then begin

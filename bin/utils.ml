@@ -241,6 +241,8 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
   done;
   if !found_dest then reconstruct_path () else raise No_path_found
 
+(** [a_star_get_next_cell crea src dest] renvoie la case où doit aller [crea] à
+    partir de [src] pour arriver à [dest]. *)
 let a_star_get_next_cell crea src dest =
   match a_star crea src dest with
   | [] -> failwith "Empty path"
