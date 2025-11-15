@@ -19,7 +19,7 @@ let _pqueue_update_priority pq prio elt =
 let pqueue_add pq prio elt =
   if pqueue_mem pq elt then (* update priority *)
     _pqueue_update_priority pq prio elt
-  else begin 
+  else begin
     pq.size <- pq.size + 1;
     pq.l <- (prio, elt) :: pq.l
   end

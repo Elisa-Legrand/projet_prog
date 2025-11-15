@@ -197,9 +197,7 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
     | None -> max_int
   in
 
-  let is_explored ((x, y) : int * int) : bool =
-    Hashtbl.mem explored (x, y)
-  in
+  let is_explored ((x, y) : int * int) : bool = Hashtbl.mem explored (x, y) in
 
   let priority ((x, y) : int * int) : int =
     get_dist_from_src (x, y) + manhattan_distance (x, y) dest
@@ -234,12 +232,12 @@ let a_star (crea : creature) (src : int * int) (dest : int * int) :
   while (not (pqueue_is_empty pq)) && not !found_dest do
     let current_cell = pqueue_pop pq in
     if not (is_explored current_cell) then begin
-    Hashtbl.add explored current_cell true;
-    if current_cell <> dest then
-      let neighbors = get_walkable_adjacent_cells crea current_cell in
-      treat_neighbors current_cell neighbors
-    else found_dest := true
-  end
+      Hashtbl.add explored current_cell true;
+      if current_cell <> dest then
+        let neighbors = get_walkable_adjacent_cells crea current_cell in
+        treat_neighbors current_cell neighbors
+      else found_dest := true
+    end
   done;
   if !found_dest then reconstruct_path () else raise No_path_found
 
